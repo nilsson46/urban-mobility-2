@@ -1,6 +1,6 @@
 package service;
 
-import com.example.demo.DemoApplication;
+import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
 import org.junit.jupiter.api.Test;
@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = {DemoApplication.class})
+@SpringBootTest(classes = {urbanMobilityApplication.class})
 class AccountServiceIntegrationTest {
 
 
@@ -27,6 +27,7 @@ class AccountServiceIntegrationTest {
     @Test
     public void Should_CreateAndReturnAccountFromDatabase(){
         Account account = Account.builder()
+
                 .username("kuro")
                 .role("User")
                 .email("kuro@gmail.com")

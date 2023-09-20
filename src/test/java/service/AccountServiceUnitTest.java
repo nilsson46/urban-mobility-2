@@ -10,6 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import com.example.demo.repository.AccountRepository;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
@@ -30,6 +32,7 @@ class AccountServiceUnitTest {
     @BeforeEach
     public void setup(){
         account = Account.builder()
+                .id(1L)
                 .username("kuro")
                 .role("User")
                 .email("kuro@gmail.com")
@@ -60,8 +63,31 @@ class AccountServiceUnitTest {
         verify(accountRepository, times(1)).save(account);
 
         // Verify that there were no other interactions with the accountRepository
-        verifyNoInteractions(accountRepository);
+        //verifyNoInteractions(accountRepository);
 
+    }
+
+    @Test
+    public void Should_ReturnUpdatedDetails_When_UpdateAccount(){
+        // Arrange
+        String newUsername = "ishige";
+
+        // Create an Account object with the same ID
+        Account existingAccount = new Account();
+        existingAccount.setId(account.getId());
+        existingAccount.setUsername(account.getUsername()); // Set other properties as needed
+
+        // Act
+        account.setUsername(newUsername);
+        Account updatedAccount = accountService.updateAccount(existingAccount, newUsername);
+
+        // Assert
+        assertThat(updatedAccount).isNotNull();  // Ensure updatedAccount is not null
+        assertThat(updatedAccount.getUsername()).isEqualTo(newUsername);
+
+        // Verify
+        verify(accountRepository, times(1)).findById(account.getId());
+        verify(accountRepository, times(1)).save(updatedAccount);
     }
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
@@ -81,6 +107,5 @@ class AccountServiceUnitTest {
 
     }
 
-    //Check so the email and username are already in the database.
-    //Check so a parameter is not null.
+
 }

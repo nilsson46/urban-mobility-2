@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Account;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.AccountRepository;
@@ -30,5 +31,16 @@ public class AccountService {
     public Account getAccountById(Long id) {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    }
+
+    public Account updateAccount(Account account, String newUsername) {
+        Account existingAccount = accountRepository.findById(account.getId())
+                .orElseThrow(() -> new EntityNotFoundException("Account with ID " + account.getId() + " not found"));
+
+        existingAccount.setUsername(newUsername);
+        // existingAccount.setEmail(account.getEmail());
+        // existingAccount.setBankAccountNumber(account.getBankAccountNumber());
+
+        return accountRepository.save(existingAccount);
     }
 }
