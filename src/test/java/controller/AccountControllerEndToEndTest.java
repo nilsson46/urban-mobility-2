@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package controller;
 
 import com.example.demo.entity.Account;
 import com.fasterxml.jackson.databind.ObjectMapper;
