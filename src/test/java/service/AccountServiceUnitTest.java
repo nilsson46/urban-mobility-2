@@ -60,7 +60,7 @@ class AccountServiceUnitTest {
         verify(accountRepository, times(1)).save(account);
 
         // Verify that there were no other interactions with the accountRepository
-       // verifyNoInteractions(accountRepository);
+        verifyNoInteractions(accountRepository);
 
     }
     @Test
