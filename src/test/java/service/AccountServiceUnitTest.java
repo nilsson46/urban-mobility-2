@@ -67,7 +67,7 @@ class AccountServiceUnitTest {
 
     }
 
-    @Test
+   /* @Test
     public void Should_ReturnUpdatedDetails_When_UpdateAccount(){
         // Arrange
         String newUsername = "ishige";
@@ -88,6 +88,57 @@ class AccountServiceUnitTest {
         // Verify
         verify(accountRepository, times(1)).findById(account.getId());
         verify(accountRepository, times(1)).save(updatedAccount);
+    } */
+
+    @Test
+    public void Should_ReturnUpdatedAccount_When_UpdateUsername() {
+        // Arrange
+        String newUsername = "ishige";
+
+        // Set the ID of the account to match the expected value (1L)
+        account.setId(1L);
+
+        // Mock the behavior of accountRepository.findById to return the account
+        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
+
+        // Mock the behavior of accountRepository.save to return the updated account
+        given(accountRepository.save(any(Account.class))).willAnswer(invocation -> {
+            Account updatedAccount = invocation.getArgument(0);
+            // Simulate the save operation by updating the account's username
+            account.setUsername(updatedAccount.getUsername());
+            return account;
+        });
+
+        // Act
+        Account updatedAccount = accountService.updateAccount(account, newUsername);
+
+        // Assert
+        assertThat(updatedAccount).isNotNull();
+        assertThat(updatedAccount.getUsername()).isEqualTo(newUsername);
+
+        // Verify that the accountRepository's findById method was called exactly once with the provided ID
+        verify(accountRepository, times(1)).findById(account.getId());
+        // Verify that the accountRepository's save method was called exactly once with the updated account
+        verify(accountRepository, times(1)).save(account);
+    }
+
+    @Test
+    public void Should_ReturnAccount_When_FindAccountById() {
+        // Arrange
+        Long accountId = 1L;
+
+        // Mock the behavior of accountRepository.findById to return the account
+        given(accountRepository.findById(accountId)).willReturn(Optional.of(account));
+
+        // Act
+        Account foundAccount = accountService.getAccountById(accountId);
+
+        // Assert
+        assertThat(foundAccount).isNotNull();
+        assertThat(foundAccount.getId()).isEqualTo(accountId);
+
+        // Verify that the accountRepository's findById method was called exactly once with the provided ID
+        verify(accountRepository, times(1)).findById(accountId);
     }
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){

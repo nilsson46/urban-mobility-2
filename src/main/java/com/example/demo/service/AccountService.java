@@ -33,14 +33,20 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
-    public Account updateAccount(Account account, String newUsername) {
-        Account existingAccount = accountRepository.findById(account.getId())
-                .orElseThrow(() -> new EntityNotFoundException("Account with ID " + account.getId() + " not found"));
+    public Account updateAccount(Account existingAccount, String newUsername) {
+        // Check if the existing account is null
+        if (existingAccount == null) {
+            throw new EntityNotFoundException("Account not found");
+        }
 
         existingAccount.setUsername(newUsername);
-        // existingAccount.setEmail(account.getEmail());
-        // existingAccount.setBankAccountNumber(account.getBankAccountNumber());
+        // Add a log statement to check the state of existingAccount before saving
+        System.out.println("Before save: " + existingAccount);
 
-        return accountRepository.save(existingAccount);
+        existingAccount = accountRepository.save(existingAccount);
+        // Add a log statement to check the state of existingAccount after saving
+        System.out.println("After save: " + existingAccount);
+
+        return existingAccount;
     }
 }
