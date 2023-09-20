@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.AccountRepository;
 
+import java.util.Optional;
+
 @Service
 public class AccountService {
 
@@ -33,7 +35,7 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
-    public Account updateAccount(Account existingAccount, String newUsername) {
+    /*public Account updateAccount(Account existingAccount, String newUsername) {
         // Check if the existing account is null
         if (existingAccount == null) {
             throw new EntityNotFoundException("Account not found");
@@ -48,5 +50,23 @@ public class AccountService {
         System.out.println("After save: " + existingAccount);
 
         return existingAccount;
+    } */
+
+    public Account updateUsername(Long accountId, String newUsername) {
+        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
+            String currentUsername = account.getUsername();
+
+            if (currentUsername == null || !currentUsername.equals(newUsername)) {
+                account.setUsername(newUsername);
+                return accountRepository.save(account);
+            } else {
+                // Username is the same; no update needed
+                return account;
+            }
+        } else {
+            throw new IllegalArgumentException("Account with ID " + accountId + " not found");
+        }
     }
 }

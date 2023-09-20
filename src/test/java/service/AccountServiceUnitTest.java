@@ -13,6 +13,7 @@ import com.example.demo.repository.AccountRepository;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
@@ -44,6 +45,25 @@ class AccountServiceUnitTest {
     }
 
     @Test
+    public void Should_ReturnUpdatedAccountDetails_When_AccountIsUpdated(){
+        //Arrange
+        String newUsername = "Simon";
+
+        //Mock
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+
+        //act
+        Account updatedAccount = accountService.updateUsername(1L, newUsername);
+
+        //Assert
+        assertEquals(newUsername, updatedAccount.getUsername());
+
+        //Verify
+        verify(accountRepository).save(account);
+    }
+
+    @Test
     public void Should_ReturnAccountDetails_When_CreateAccount(){
 
          //Arrange
@@ -67,60 +87,6 @@ class AccountServiceUnitTest {
 
     }
 
-   /* @Test
-    public void Should_ReturnUpdatedDetails_When_UpdateAccount(){
-        // Arrange
-        String newUsername = "ishige";
-
-        // Create an Account object with the same ID
-        Account existingAccount = new Account();
-        existingAccount.setId(account.getId());
-        existingAccount.setUsername(account.getUsername()); // Set other properties as needed
-
-        // Act
-        account.setUsername(newUsername);
-        Account updatedAccount = accountService.updateAccount(existingAccount, newUsername);
-
-        // Assert
-        assertThat(updatedAccount).isNotNull();  // Ensure updatedAccount is not null
-        assertThat(updatedAccount.getUsername()).isEqualTo(newUsername);
-
-        // Verify
-        verify(accountRepository, times(1)).findById(account.getId());
-        verify(accountRepository, times(1)).save(updatedAccount);
-    } */
-
-    @Test
-    public void Should_ReturnUpdatedAccount_When_UpdateUsername() {
-        // Arrange
-        String newUsername = "ishige";
-
-        // Set the ID of the account to match the expected value (1L)
-        account.setId(1L);
-
-        // Mock the behavior of accountRepository.findById to return the account
-        given(accountRepository.findById(account.getId())).willReturn(Optional.of(account));
-
-        // Mock the behavior of accountRepository.save to return the updated account
-        given(accountRepository.save(any(Account.class))).willAnswer(invocation -> {
-            Account updatedAccount = invocation.getArgument(0);
-            // Simulate the save operation by updating the account's username
-            account.setUsername(updatedAccount.getUsername());
-            return account;
-        });
-
-        // Act
-        Account updatedAccount = accountService.updateAccount(account, newUsername);
-
-        // Assert
-        assertThat(updatedAccount).isNotNull();
-        assertThat(updatedAccount.getUsername()).isEqualTo(newUsername);
-
-        // Verify that the accountRepository's findById method was called exactly once with the provided ID
-        verify(accountRepository, times(1)).findById(account.getId());
-        // Verify that the accountRepository's save method was called exactly once with the updated account
-        verify(accountRepository, times(1)).save(account);
-    }
 
     @Test
     public void Should_ReturnAccount_When_FindAccountById() {
