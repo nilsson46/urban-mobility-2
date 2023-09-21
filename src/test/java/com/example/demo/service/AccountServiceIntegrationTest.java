@@ -3,8 +3,10 @@ package com.example.demo.service;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.dto.AccountUpdateRequest;
+import com.example.demo.repository.AccountRepository;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,14 +20,13 @@ class AccountServiceIntegrationTest {
 
     @Autowired
     AccountService accountService;
+    @Autowired
+    private AccountRepository accountRepository;
 
-    //private final AccountRepository accountRepository;
-
-
-    /*public AccountServiceIntegrationTest(AccountRepository accountRepository, AccountService accountService) {
-        this.accountRepository = accountRepository;
-        this.accountService = accountService;
-    } */
+    @AfterEach
+    void cleanUp(){
+        accountRepository.deleteAll();
+    }
 
     @Test
     public void Should_CreateAndReturnAccountFromDatabase() {
