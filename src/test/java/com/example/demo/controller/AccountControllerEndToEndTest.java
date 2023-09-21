@@ -7,6 +7,7 @@ import com.example.demo.service.AccountService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tomcat.websocket.server.UriTemplate;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,11 @@ class AccountControllerEndToEndTest {
         accountRepository.save(account);
     }
  */
+
+    @AfterEach
+    void cleanUp(){
+        accountRepository.deleteAll();
+    }
     @Test
     void Should_CreateAccount_ReturnAccount() throws  Exception{
 
