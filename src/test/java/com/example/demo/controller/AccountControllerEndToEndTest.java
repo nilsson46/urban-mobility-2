@@ -110,8 +110,8 @@ class AccountControllerEndToEndTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.id").value(createdAccount.getId()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.account.username").value("new_username"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.account.email").value("new_email@gmail.com"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.account.username").value("Simon"))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.account.email").value("simon@gmail.com"));
     }
 
 
