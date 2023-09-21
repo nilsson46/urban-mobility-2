@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
-import com.example.demo.Exceptions.EmailAlreadyExistsException;
-import com.example.demo.Exceptions.UsernameAlreadyExistsException;
+import com.example.demo.Exceptions.ResourceNotFoundException;
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.AccountRepository;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -22,15 +21,15 @@ public class AccountService {
 
         this.accountRepository = accountRepository;
     }
-    public Account createAccount(Account account) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public Account createAccount(Account account) throws InvalidInputException, ResourceNotFoundException {
 
         String username = account.getUsername();
         if(accountRepository.findByUsername(username) != null){
-            throw new UsernameAlreadyExistsException("Username already exists");
+            throw new InvalidInputException("Username already exists");
         }
         String email = account.getEmail();
         if(accountRepository.findByEmail(email) != null){
-            throw new EmailAlreadyExistsException("Email already exists");
+            throw new ResourceNotFoundException("Email already exists");
         }
         return accountRepository.save(account);
     }
@@ -39,7 +38,7 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
-    public Account updateAccount(Long accountId, AccountUpdateRequest updateRequest) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public Account updateAccount(Long accountId, AccountUpdateRequest updateRequest)  {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
@@ -49,7 +48,7 @@ public class AccountService {
                 Account existingAccount = accountRepository.findByUsername(updateRequest.getUsername());
 
                 if(existingAccount!= null){
-                    throw new UsernameAlreadyExistsException("Username already exists in the database");
+                    throw new InvalidInputException("Username already exists with id: " + accountId);
                 }
                 account.setUsername(updateRequest.getUsername());
                 hasChanges = true;
@@ -59,7 +58,7 @@ public class AccountService {
                 Account existingAccount = accountRepository.findByEmail(updateRequest.getEmail());
 
                 if(existingAccount!= null){
-                    throw new EmailAlreadyExistsException("Email already exists in the database");
+                    throw new InvalidInputException("Email already exists with id: " + accountId);
                 }
                 account.setEmail(updateRequest.getEmail());
                 hasChanges = true;

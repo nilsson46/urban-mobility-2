@@ -1,11 +1,10 @@
 package com.example.demo.service;
 
-import com.example.demo.Exceptions.EmailAlreadyExistsException;
-import com.example.demo.Exceptions.UsernameAlreadyExistsException;
+import com.example.demo.Exceptions.ResourceNotFoundException;
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
-import com.example.demo.service.AccountService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,7 +28,7 @@ class AccountServiceIntegrationTest {
     } */
 
     @Test
-    public void Should_CreateAndReturnAccountFromDatabase() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public void Should_CreateAndReturnAccountFromDatabase() {
         Account account = Account.builder()
 
                 .username("kuro")
@@ -53,7 +52,7 @@ class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase(){
         // Create an initial Account
         Account account = Account.builder()
                 .username("kuro")

@@ -1,10 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.Exceptions.EmailAlreadyExistsException;
-import com.example.demo.Exceptions.UsernameAlreadyExistsException;
+import com.example.demo.Exceptions.ResourceNotFoundException;
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
-import com.example.demo.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,7 +47,7 @@ class AccountServiceUnitTest {
     }
 
     @Test
-    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
         // Arrange
         String newUsername = "Simon";
         String newEmail = "simon@example.com";
@@ -75,7 +74,7 @@ class AccountServiceUnitTest {
         verify(accountRepository).save(account);
     }
     @Test
-    public void Should_ReturnAccountDetails_When_CreateAccount() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
+    public void Should_ReturnAccountDetails_When_CreateAccount(){
 
          //Arrange
 
