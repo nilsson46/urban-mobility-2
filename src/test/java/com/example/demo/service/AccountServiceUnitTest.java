@@ -122,7 +122,7 @@ class AccountServiceUnitTest {
         given(accountRepository.findByUsername(account.getUsername())).willReturn(account);
 
         //Act
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidInputException.class,
                 () -> accountService.createAccount(account));
 
         //Assert
