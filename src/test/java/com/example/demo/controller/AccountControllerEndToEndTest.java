@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Account;
+import com.example.demo.repository.AccountRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.tomcat.websocket.server.UriTemplate;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import org.springframework.web.util.UriComponentsBuilder;
+
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -25,6 +29,26 @@ class AccountControllerEndToEndTest {
 
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private AccountRepository accountRepository;
+
+    private Account account;
+
+    /*@BeforeEach
+    public void setUp() {
+        // Create and save a test account to the database
+        account = Account.builder()
+                .id(1L)
+                .username("kuro")
+                .role("User")
+                .email("kuro@gmail.com")
+                .bankAccountNumber("12345678")
+                .isPaymentConfirmed(true)
+                .paymentHistory(0)
+                .activeOrders(0)
+                .build();
+        accountRepository.save(account);
+    } */
 
     @Test
     void Should_CreateAccount_ReturnAccount() throws  Exception{
@@ -38,7 +62,6 @@ class AccountControllerEndToEndTest {
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
-
 
         ObjectMapper objectMapper = new ObjectMapper();
         String jsonAccount = objectMapper.writeValueAsString(account);
@@ -54,8 +77,29 @@ class AccountControllerEndToEndTest {
                 .andExpect(jsonPath("$.email", Matchers.is("kuro@gmail.com")));
     }
 
-    @Test
-    void createOrder() throws Exception{
+    /* @Test
+    void Should_UpdateAccount_ReturnUpdatedAccount() throws Exception{
 
-    }
+        String newUsername = "Simon";
+
+        Account updatedAccount = new Account();
+        updatedAccount.setUsername(newUsername);
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonUpdatedAccount = objectMapper.writeValueAsString(updatedAccount);
+
+        /*String url = UriComponentsBuilder
+                .fromPath("/api/account/{accountId}")
+                .buildAndExpand(1)
+                .toUriString();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/account/{accountId}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonUpdatedAccount)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", Matchers.is((1))))
+                .andExpect(jsonPath("$.username", Matchers.is(newUsername)));
+    }  */
 }

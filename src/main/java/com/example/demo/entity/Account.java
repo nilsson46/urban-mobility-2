@@ -35,4 +35,9 @@ public class Account {
     @Column(name = "active_orders", nullable = false)
     private int activeOrders;
 
+    public Account setUsername(String username) {
+        this.username = username;
+        return this; // Return the modified object
+    }
+
 }
