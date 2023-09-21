@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.demo.repository.AccountRepository;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -52,7 +53,7 @@ public class AccountService {
         return existingAccount;
     } */
 
-    public Account updateUsername(Long accountId, String newUsername) {
+    /*public Account updateUsername(Long accountId, String newUsername) {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
@@ -67,6 +68,38 @@ public class AccountService {
             }
         } else {
             throw new IllegalArgumentException("Account with ID " + accountId + " not found");
+        }
+    } */
+
+    public Account updateAccount(Long accountId, String username, String email, String bankAccountNumber) {
+        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
+            boolean hasChanges = false;
+
+            if (username != null && !username.equals(account.getUsername())) {
+                account.setUsername(username);
+                hasChanges = true;
+            }
+
+            if (email != null && !email.equals(account.getEmail())) {
+                account.setEmail(email);
+                hasChanges = true;
+            }
+
+            if (bankAccountNumber != null && !bankAccountNumber.equals(account.getBankAccountNumber())) {
+                account.setBankAccountNumber(bankAccountNumber);
+                hasChanges = true;
+            }
+
+            if (hasChanges) {
+                return accountRepository.save(account);
+            } else {
+                // No changes were made; return the original account
+                return account;
+            }
+        } else {
+            throw new EntityNotFoundException("Account with ID " + accountId + " not found");
         }
     }
 }

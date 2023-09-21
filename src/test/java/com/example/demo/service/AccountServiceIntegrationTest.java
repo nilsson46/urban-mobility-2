@@ -50,9 +50,9 @@ class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void Should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase(){
+    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase() {
+        // Create an initial Account
         Account account = Account.builder()
-
                 .username("kuro")
                 .role("User")
                 .email("kuro@gmail.com")
@@ -62,18 +62,23 @@ class AccountServiceIntegrationTest {
                 .activeOrders(0)
                 .build();
 
+        // Create the initial Account in the database
         Account createdAccount = accountService.createAccount(account);
         Long accountId = createdAccount.getId();
 
+        // Update the Account's fields
         String newUsername = "Simon";
-        Account uppdatedAccount = createdAccount.setUsername(newUsername);
+        String newEmail = "simon@example.com";
+        String newBankAccountNumber = "87654321";
 
-        assertThat(uppdatedAccount).isNotNull();
+        Account updatedAccount = accountService.updateAccount(accountId, newUsername, newEmail, newBankAccountNumber);
 
-        assertEquals(accountId, uppdatedAccount.getId());
-
-        assertEquals(newUsername, uppdatedAccount.getUsername());
-
+        // Assertions
+        assertThat(updatedAccount).isNotNull();
+        assertEquals(accountId, updatedAccount.getId());
+        assertEquals(newUsername, updatedAccount.getUsername());
+        assertEquals(newEmail, updatedAccount.getEmail());
+        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
     }
 
 

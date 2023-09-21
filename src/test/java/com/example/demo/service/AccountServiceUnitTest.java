@@ -45,24 +45,27 @@ class AccountServiceUnitTest {
     }
 
     @Test
-    public void Should_ReturnUpdatedAccountDetails_When_AccountIsUpdated(){
-        //Arrange
+    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
+        // Arrange
         String newUsername = "Simon";
+        String newEmail = "simon@example.com";
+        String newBankAccountNumber = "1234567890";
 
-        //Mock
+        // Mock
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
-        //act
-        Account updatedAccount = accountService.updateUsername(1L, newUsername);
+        // Act
+        Account updatedAccount = accountService.updateAccount(1L, newUsername, newEmail, newBankAccountNumber);
 
-        //Assert
+        // Assert
         assertEquals(newUsername, updatedAccount.getUsername());
+        assertEquals(newEmail, updatedAccount.getEmail());
+        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
 
-        //Verify
+        // Verify
         verify(accountRepository).save(account);
     }
-
     @Test
     public void Should_ReturnAccountDetails_When_CreateAccount(){
 
