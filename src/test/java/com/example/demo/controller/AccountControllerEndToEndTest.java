@@ -77,29 +77,5 @@ class AccountControllerEndToEndTest {
                 .andExpect(jsonPath("$.email", Matchers.is("kuro@gmail.com")));
     }
 
-    /* @Test
-    void Should_UpdateAccount_ReturnUpdatedAccount() throws Exception{
 
-        String newUsername = "Simon";
-
-        Account updatedAccount = new Account();
-        updatedAccount.setUsername(newUsername);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonUpdatedAccount = objectMapper.writeValueAsString(updatedAccount);
-
-        /*String url = UriComponentsBuilder
-                .fromPath("/api/account/{accountId}")
-                .buildAndExpand(1)
-                .toUriString();
-
-        mockMvc.perform(MockMvcRequestBuilders
-                .put("/api/account/{accountId}")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(jsonUpdatedAccount)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", Matchers.is((1))))
-                .andExpect(jsonPath("$.username", Matchers.is(newUsername)));
-    }  */
 }

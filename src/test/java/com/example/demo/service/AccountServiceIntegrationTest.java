@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.Exceptions.EmailAlreadyExistsException;
+import com.example.demo.Exceptions.UsernameAlreadyExistsException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
@@ -27,7 +29,7 @@ class AccountServiceIntegrationTest {
     } */
 
     @Test
-    public void Should_CreateAndReturnAccountFromDatabase(){
+    public void Should_CreateAndReturnAccountFromDatabase() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         Account account = Account.builder()
 
                 .username("kuro")
@@ -51,7 +53,7 @@ class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase() {
+    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         // Create an initial Account
         Account account = Account.builder()
                 .username("kuro")

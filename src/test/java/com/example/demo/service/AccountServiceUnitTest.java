@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+import com.example.demo.Exceptions.EmailAlreadyExistsException;
+import com.example.demo.Exceptions.UsernameAlreadyExistsException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
@@ -46,7 +48,7 @@ class AccountServiceUnitTest {
     }
 
     @Test
-    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
+    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         // Arrange
         String newUsername = "Simon";
         String newEmail = "simon@example.com";
@@ -73,7 +75,7 @@ class AccountServiceUnitTest {
         verify(accountRepository).save(account);
     }
     @Test
-    public void Should_ReturnAccountDetails_When_CreateAccount(){
+    public void Should_ReturnAccountDetails_When_CreateAccount() throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
 
          //Arrange
 

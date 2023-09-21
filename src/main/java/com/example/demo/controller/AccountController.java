@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.Exceptions.EmailAlreadyExistsException;
+import com.example.demo.Exceptions.UsernameAlreadyExistsException;
 import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
@@ -20,7 +22,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public Account createAccount(@RequestBody Account account) {
+    public Account createAccount(@RequestBody Account account) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         return accountService.createAccount(account);
     }
 
@@ -41,7 +43,7 @@ public class AccountController {
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> updateAccount(
             @PathVariable Long id,
-            @RequestBody AccountUpdateRequest updateRequest) {
+            @RequestBody AccountUpdateRequest updateRequest) throws UsernameAlreadyExistsException, EmailAlreadyExistsException {
         Account updatedAccount = accountService.updateAccount(id, updateRequest);
 
         Map<String, Object> response = new HashMap<>();
