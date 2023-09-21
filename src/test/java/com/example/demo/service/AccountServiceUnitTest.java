@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,12 +52,17 @@ class AccountServiceUnitTest {
         String newEmail = "simon@example.com";
         String newBankAccountNumber = "1234567890";
 
+        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
+        updateRequest.setUsername(newUsername);
+        updateRequest.setEmail(newEmail);
+        updateRequest.setBankAccountNumber(newBankAccountNumber);
+
         // Mock
         when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
         // Act
-        Account updatedAccount = accountService.updateAccount(1L, newUsername, newEmail, newBankAccountNumber);
+        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
 
         // Assert
         assertEquals(newUsername, updatedAccount.getUsername());

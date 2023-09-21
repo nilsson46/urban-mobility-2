@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
@@ -66,19 +67,20 @@ class AccountServiceIntegrationTest {
         Account createdAccount = accountService.createAccount(account);
         Long accountId = createdAccount.getId();
 
-        // Update the Account's fields
-        String newUsername = "Simon";
-        String newEmail = "simon@example.com";
-        String newBankAccountNumber = "87654321";
+        // Update the Account's fields using the DTO
+        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
+        updateRequest.setUsername("Simon");
+        updateRequest.setEmail("simon@example.com");
+        updateRequest.setBankAccountNumber("87654321");
 
-        Account updatedAccount = accountService.updateAccount(accountId, newUsername, newEmail, newBankAccountNumber);
+        Account updatedAccount = accountService.updateAccount(accountId, updateRequest);
 
         // Assertions
         assertThat(updatedAccount).isNotNull();
         assertEquals(accountId, updatedAccount.getId());
-        assertEquals(newUsername, updatedAccount.getUsername());
-        assertEquals(newEmail, updatedAccount.getEmail());
-        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
+        assertEquals(updateRequest.getUsername(), updatedAccount.getUsername());
+        assertEquals(updateRequest.getEmail(), updatedAccount.getEmail());
+        assertEquals(updateRequest.getBankAccountNumber(), updatedAccount.getBankAccountNumber());
     }
 
 

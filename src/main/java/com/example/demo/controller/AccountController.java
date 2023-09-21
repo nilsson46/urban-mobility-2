@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
 import org.springframework.http.ResponseEntity;
@@ -36,5 +37,18 @@ public class AccountController {
 
         return ResponseEntity.ok(response);
     } */
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Map<String, Object>> updateAccount(
+            @PathVariable Long id,
+            @RequestBody AccountUpdateRequest updateRequest) {
+        Account updatedAccount = accountService.updateAccount(id, updateRequest);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("account", updatedAccount);
+        response.put("updateRequest", updateRequest);
+
+        return ResponseEntity.ok(response);
+    }
 
 }

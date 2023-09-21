@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,24 +72,25 @@ public class AccountService {
         }
     } */
 
-    public Account updateAccount(Long accountId, String username, String email, String bankAccountNumber) {
+    public Account updateAccount(Long accountId, AccountUpdateRequest updateRequest) {
         Optional<Account> optionalAccount = accountRepository.findById(accountId);
         if (optionalAccount.isPresent()) {
             Account account = optionalAccount.get();
             boolean hasChanges = false;
 
-            if (username != null && !username.equals(account.getUsername())) {
-                account.setUsername(username);
+            if (updateRequest.getUsername() != null && !updateRequest.getUsername().equals(account.getUsername())) {
+                account.setUsername(updateRequest.getUsername());
                 hasChanges = true;
             }
 
-            if (email != null && !email.equals(account.getEmail())) {
-                account.setEmail(email);
+            if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(account.getEmail())) {
+                account.setEmail(updateRequest.getEmail());
                 hasChanges = true;
             }
 
-            if (bankAccountNumber != null && !bankAccountNumber.equals(account.getBankAccountNumber())) {
-                account.setBankAccountNumber(bankAccountNumber);
+            if (updateRequest.getBankAccountNumber() != null
+                    && !updateRequest.getBankAccountNumber().equals(account.getBankAccountNumber())) {
+                account.setBankAccountNumber(updateRequest.getBankAccountNumber());
                 hasChanges = true;
             }
 
