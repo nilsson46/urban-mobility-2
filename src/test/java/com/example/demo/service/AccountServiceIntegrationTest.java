@@ -7,6 +7,7 @@ import com.example.demo.repository.AccountRepository;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +24,11 @@ class AccountServiceIntegrationTest {
     @Autowired
     private AccountRepository accountRepository;
 
-    @AfterEach
-    void cleanUp(){
-        accountRepository.deleteAll();
-    }
+    private Account account;
 
-    @Test
-    public void Should_CreateAndReturnAccountFromDatabase() {
-        Account account = Account.builder()
-
+    @BeforeEach
+    public void setup(){
+        account = Account.builder()
                 .username("kuro")
                 .role("User")
                 .email("kuro@gmail.com")
@@ -40,7 +37,15 @@ class AccountServiceIntegrationTest {
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
+    }
 
+    @AfterEach
+    void cleanUp(){
+        accountRepository.deleteAll();
+    }
+
+    @Test
+    public void Should_CreateAndReturnAccountFromDatabase() {
         Account savedAccount = accountService.createAccount(account);
 
         assertThat(savedAccount).isNotNull();
@@ -54,16 +59,6 @@ class AccountServiceIntegrationTest {
 
     @Test
     public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase(){
-        // Create an initial Account
-        Account account = Account.builder()
-                .username("kuro")
-                .role("User")
-                .email("kuro@gmail.com")
-                .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
-                .paymentHistory(0)
-                .activeOrders(0)
-                .build();
 
         // Create the initial Account in the database
         Account createdAccount = accountService.createAccount(account);
@@ -83,6 +78,16 @@ class AccountServiceIntegrationTest {
         assertEquals(updateRequest.getUsername(), updatedAccount.getUsername());
         assertEquals(updateRequest.getEmail(), updatedAccount.getEmail());
         assertEquals(updateRequest.getBankAccountNumber(), updatedAccount.getBankAccountNumber());
+    }
+    @Test
+    public void Should_BeEmpty_WhenDeleteByAccountById(){
+        accountRepository.save(account);
+        long accountId = account.getId();
+
+        accountService.deleteAccountById(accountId);
+
+        assertThat(accountRepository.findAll().size()).isEqualTo(0);
+
     }
 
 
