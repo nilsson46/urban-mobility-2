@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
-import com.example.demo.dto.AccountUpdateRequest;
 import com.example.demo.entity.Account;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +38,13 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
-    public Account updateAccount(Long accountId, AccountUpdateRequest updateRequest)  {
-        Optional<Account> optionalAccount = accountRepository.findById(accountId);
-        if (optionalAccount.isPresent()) {
-            Account account = optionalAccount.get();
+    public Account updateAccount(Long accountId, Account updateRequest)  {
+       // Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if(!accountRepository.existsById(accountId)) {
+            throw new ResourceNotFoundException("Account with ID " + accountId + " not found");
+        }
+        //check how to get the right account and then change the account.
+       /* Account account = optionalAccount.get();
             boolean hasChanges = false;
 
             if (updateRequest.getUsername() != null && !updateRequest.getUsername().equals(account.getUsername())) {
@@ -76,11 +78,10 @@ public class AccountService {
             } else {
                 // No changes were made; return the original account
                 return account;
-            }
-        } else {
-            throw new EntityNotFoundException("Account with ID " + accountId + " not found");
+            } */
+            return null;
         }
-    }
+
 
     public void deleteAccountById(long accountId) {
         if(!accountRepository.existsById(accountId)){

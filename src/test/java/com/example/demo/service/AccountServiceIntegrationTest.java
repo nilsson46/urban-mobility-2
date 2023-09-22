@@ -1,8 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.Exceptions.ResourceNotFoundException;
-import com.example.demo.Exceptions.InvalidInputException;
-import com.example.demo.dto.AccountUpdateRequest;
+import com.example.demo.dto.AccountDto;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
@@ -25,15 +23,28 @@ class AccountServiceIntegrationTest {
     private AccountRepository accountRepository;
 
     private Account account;
+    private Account inputAccount;
 
     @BeforeEach
     public void setup(){
         account = Account.builder()
+                .id(1L)
                 .username("kuro")
                 .role("User")
                 .email("kuro@gmail.com")
                 .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
+                .paymentConfirmed(true)
+                .paymentHistory(0)
+                .activeOrders(0)
+                .build();
+
+        inputAccount = Account.builder()
+                .id(1L)
+                .username("Isak")
+                .role("User")
+                .email("Isak@gmail.com")
+                .bankAccountNumber("12345678")
+                .paymentConfirmed(true)
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
@@ -58,26 +69,22 @@ class AccountServiceIntegrationTest {
     }
 
     @Test
-    public void should_UpdateAccount_AndReturnUpdatedAccountDetails_FromDatabase(){
 
-        // Create the initial Account in the database
-        Account createdAccount = accountService.createAccount(account);
-        Long accountId = createdAccount.getId();
+    public void Should_UpdateAccount_WhenUpdateIsMade(){
 
-        // Update the Account's fields using the DTO
-        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
-        updateRequest.setUsername("Simon");
-        updateRequest.setEmail("simon@example.com");
-        updateRequest.setBankAccountNumber("87654321");
+        //Arrange
+        long accountId = account.getId();
+        accountRepository.save(account);
+        Account updatedAccount = accountRepository.findById(account.getId()).get();
 
-        Account updatedAccount = accountService.updateAccount(accountId, updateRequest);
+        //Act
+        accountService.updateAccount(accountId, inputAccount);
+        Account fetchUpdate = accountRepository.findById(account.getId()).get();
 
-        // Assertions
-        assertThat(updatedAccount).isNotNull();
-        assertEquals(accountId, updatedAccount.getId());
-        assertEquals(updateRequest.getUsername(), updatedAccount.getUsername());
-        assertEquals(updateRequest.getEmail(), updatedAccount.getEmail());
-        assertEquals(updateRequest.getBankAccountNumber(), updatedAccount.getBankAccountNumber());
+        assertThat(fetchUpdate.getUsername()).isNotEqualTo(updatedAccount.getUsername());
+        assertThat(fetchUpdate.getId()).isEqualTo(updatedAccount.getId());
+        assertThat(fetchUpdate.getEmail()).isNotEqualTo(updatedAccount.getEmail());
+
     }
     @Test
     public void Should_BeEmpty_WhenDeleteByAccountById(){

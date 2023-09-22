@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AccountUpdateRequest;
+import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.service.AccountService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.tomcat.websocket.server.UriTemplate;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,15 +15,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.util.UriComponentsBuilder;
 
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -38,9 +34,10 @@ class AccountControllerEndToEndTest {
     AccountService accountService;
 
     private Account account;
+    private String jsonAccount;
 
-    /*@BeforeEach
-    public void setUp() {
+    @BeforeEach
+    public void setUp() throws JsonProcessingException {
         // Create and save a test account to the database
         account = Account.builder()
                 .id(1L)
@@ -48,13 +45,16 @@ class AccountControllerEndToEndTest {
                 .role("User")
                 .email("kuro@gmail.com")
                 .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
+                .paymentConfirmed(true)
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
         accountRepository.save(account);
+        ObjectMapper objectMapper = new ObjectMapper();
+        jsonAccount = objectMapper.writeValueAsString(account);
     }
- */
+
+
 
     @AfterEach
     void cleanUp(){
@@ -62,19 +62,6 @@ class AccountControllerEndToEndTest {
     }
     @Test
     void Should_CreateAccount_ReturnAccount() throws  Exception{
-
-        Account account = Account.builder()
-                .username("kuro")
-                .role("User")
-                .email("kuro@gmail.com")
-                .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
-                .paymentHistory(0)
-                .activeOrders(0)
-                .build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonAccount = objectMapper.writeValueAsString(account);
 
         mockMvc.perform(MockMvcRequestBuilders
                 .post("/api/account")
@@ -91,18 +78,18 @@ class AccountControllerEndToEndTest {
     void Should_UpdateAccount_ReturnAccount() throws  Exception{
 
         Account account = Account.builder()
-                .username("kuro")
+                .username("melvin")
                 .role("User")
-                .email("kuro@gmail.com")
+                .email("melvin@gmail.com")
                 .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
+                .paymentConfirmed(true)
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
 
         Account createdAccount = accountService.createAccount(account);
 
-        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
+        AccountDto updateRequest = new AccountDto();
         updateRequest.setUsername("Simon");
         updateRequest.setEmail("simon@gmail.com");
 
@@ -119,8 +106,11 @@ class AccountControllerEndToEndTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.username").value("Simon"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.email").value("simon@gmail.com"));
     }
-
-
-
-
+    @Test
+    public void Should_DeleteAccount() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders
+                .delete("/api/account/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Account was deleted successfully"));
+    }
 }

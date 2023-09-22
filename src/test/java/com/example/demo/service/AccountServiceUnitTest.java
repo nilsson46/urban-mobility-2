@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
-import com.example.demo.dto.AccountUpdateRequest;
+import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ class AccountServiceUnitTest {
 
     private Account account;
 
+    private Account inputAccount;
     @BeforeEach
     public void setup(){
         account = Account.builder()
@@ -41,11 +42,20 @@ class AccountServiceUnitTest {
                 .role("User")
                 .email("kuro@gmail.com")
                 .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
+                .paymentConfirmed(true)
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
-
+        inputAccount = Account.builder()
+                .id(1L)
+                .username("Isak")
+                .role("User")
+                .email("Isak@gmail.com")
+                .bankAccountNumber("12345678")
+                .paymentConfirmed(true)
+                .paymentHistory(0)
+                .activeOrders(0)
+                .build();
     }
 
 
@@ -128,7 +138,7 @@ class AccountServiceUnitTest {
         String newEmail = "simon@example.com";
         String newBankAccountNumber = "1234567890";
 
-        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
+        AccountDto updateRequest = new AccountDto();
         updateRequest.setUsername(newUsername);
         updateRequest.setEmail(newEmail);
         updateRequest.setBankAccountNumber(newBankAccountNumber);
@@ -138,7 +148,7 @@ class AccountServiceUnitTest {
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
         // Act
-        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
+        Account updatedAccount = accountService.updateAccount(1L, account);
 
         // Assert
         assertEquals(newUsername, updatedAccount.getUsername());
@@ -147,6 +157,26 @@ class AccountServiceUnitTest {
 
         // Verify
         verify(accountRepository).save(account);
+    }
+    @Test
+    public void test(){
+        long accountId = account.getId();
+
+        given(accountRepository.existsById(accountId)).willReturn(true);
+        given(accountRepository.save(inputAccount)).willReturn(inputAccount);
+
+        Account updatedAccount = accountService.updateAccount(accountId, inputAccount);
+
+        assertThat(updatedAccount.getUsername()).isNotEqualTo(account.getUsername());
+    }
+    @Test
+    public void testThrow(){
+        long accountId = account.getId();
+
+        given(accountRepository.existsById(accountId)).willReturn(false);
+
+        assertThrows(ResourceNotFoundException.class,
+                () -> accountService.updateAccount(accountId, account));
     }
 
     @Test

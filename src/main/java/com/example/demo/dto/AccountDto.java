@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-public class AccountUpdateRequest {
+public class AccountDto {
     private String username;
     private String email;
     private String bankAccountNumber;

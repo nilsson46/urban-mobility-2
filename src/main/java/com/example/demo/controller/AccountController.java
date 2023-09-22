@@ -2,9 +2,10 @@ package com.example.demo.controller;
 
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
-import com.example.demo.dto.AccountUpdateRequest;
+import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,36 +22,33 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    @GetMapping("/{id}")
+    public Account getAccountById(@PathVariable("id") long accountId){
+        return accountService.getAccountById(accountId);
+    }
+
     @PostMapping
     public Account createAccount(@RequestBody Account account) throws InvalidInputException, ResourceNotFoundException {
         return accountService.createAccount(account);
     }
 
-   /* @PutMapping("/{accountId}")
-    public Account updateAccount(
-            @PathVariable("accountId") Long accountId,
-            @RequestBody Account account
-    ){
-        String updatedUsername = String.valueOf(accountService.updateUsername(accountId, account));
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", accountId);
-        response.put("username", updatedUsername);
-
-        return ResponseEntity.ok(response);
-    } */
-
     @PutMapping("/{id}")
     public ResponseEntity<Map<String, Object>> updateAccount(
             @PathVariable Long id,
-            @RequestBody AccountUpdateRequest updateRequest) throws InvalidInputException, ResourceNotFoundException {
-        Account updatedAccount = accountService.updateAccount(id, updateRequest);
+            @RequestBody Account account) throws InvalidInputException, ResourceNotFoundException {
+        Account updatedAccount = accountService.updateAccount(id, account);
 
         Map<String, Object> response = new HashMap<>();
         response.put("account", updatedAccount);
-        response.put("updateRequest", updateRequest);
+        response.put("updateRequest", account);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteAccount(@PathVariable("id")int accountId){
+        accountService.deleteAccountById(accountId);
+        return new ResponseEntity<>("Account was deleted successfully", HttpStatus.OK);
     }
 
 }

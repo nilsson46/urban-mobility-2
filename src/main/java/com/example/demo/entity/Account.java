@@ -27,7 +27,7 @@ public class Account {
     private String bankAccountNumber;
 
     @Column(name = "is_payment_confirmed", nullable = false)
-    private boolean isPaymentConfirmed;
+    private boolean paymentConfirmed;
 
     @Column(name = "payment_history", nullable = false)
     private int paymentHistory;
