@@ -18,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.mockito.Mockito.*;
 
 
@@ -44,35 +45,11 @@ class AccountServiceUnitTest {
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
+
     }
 
-    @Test
-    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
-        // Arrange
-        String newUsername = "Simon";
-        String newEmail = "simon@example.com";
-        String newBankAccountNumber = "1234567890";
 
-        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
-        updateRequest.setUsername(newUsername);
-        updateRequest.setEmail(newEmail);
-        updateRequest.setBankAccountNumber(newBankAccountNumber);
 
-        // Mock
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(accountRepository.save(any(Account.class))).thenReturn(account);
-
-        // Act
-        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
-
-        // Assert
-        assertEquals(newUsername, updatedAccount.getUsername());
-        assertEquals(newEmail, updatedAccount.getEmail());
-        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
-
-        // Verify
-        verify(accountRepository).save(account);
-    }
     @Test
     public void Should_ReturnAccountDetails_When_CreateAccount(){
 
@@ -116,6 +93,7 @@ class AccountServiceUnitTest {
         // Verify that the accountRepository's findById method was called exactly once with the provided ID
         verify(accountRepository, times(1)).findById(accountId);
     }
+
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
         //Arrange
@@ -132,7 +110,66 @@ class AccountServiceUnitTest {
     @Test
     public void Should_ThrowIllegalArgumentException_IfEmailAlreadyExists(){
 
+        //Arrange
+        given(accountRepository.findByEmail(account.getEmail())).willReturn(account);
+
+        //Act
+        assertThrows(InvalidInputException.class,
+                () -> accountService.createAccount(account));
+
+        //Assert
+        verify(accountRepository, times(1)).findByEmail(account.getEmail());
     }
 
+    @Test
+    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
+        // Arrange
+        String newUsername = "Simon";
+        String newEmail = "simon@example.com";
+        String newBankAccountNumber = "1234567890";
 
-}
+        AccountUpdateRequest updateRequest = new AccountUpdateRequest();
+        updateRequest.setUsername(newUsername);
+        updateRequest.setEmail(newEmail);
+        updateRequest.setBankAccountNumber(newBankAccountNumber);
+
+        // Mock
+        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
+
+        // Act
+        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
+
+        // Assert
+        assertEquals(newUsername, updatedAccount.getUsername());
+        assertEquals(newEmail, updatedAccount.getEmail());
+        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
+
+        // Verify
+        verify(accountRepository).save(account);
+    }
+
+    @Test
+    public void Should_DeleteAccount_WhenPassingValidId(){
+        long accountId = account.getId();
+        given(accountRepository.existsById(accountId)).willReturn(true);
+        willDoNothing().given(accountRepository).deleteById(accountId);
+
+        accountService.deleteAccountById(accountId);
+
+        verify(accountRepository, times(1)).deleteById(accountId);
+
+    }
+    @Test
+    public void ShouldT_ThrowException_WhenPassingInvalidId(){
+        // Arrange
+        long accountId = 2L;
+        given(accountRepository.existsById(accountId)).willReturn(false);
+
+        // Act
+        assertThrows(ResourceNotFoundException.class,
+                () -> accountService.deleteAccountById(accountId));
+    }
+
+    }
+

@@ -16,6 +16,8 @@ public class AccountService {
 
     private final AccountRepository accountRepository;
 
+
+
     @Autowired
     public AccountService(AccountRepository accountRepository){
 
@@ -29,11 +31,10 @@ public class AccountService {
         }
         String email = account.getEmail();
         if(accountRepository.findByEmail(email) != null){
-            throw new ResourceNotFoundException("Email already exists");
+            throw new InvalidInputException("Email already exists");
         }
         return accountRepository.save(account);
-    }
-    public Account getAccountById(Long id) {
+    }public Account getAccountById(Long id) {
         return accountRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
@@ -80,4 +81,41 @@ public class AccountService {
             throw new EntityNotFoundException("Account with ID " + accountId + " not found");
         }
     }
+
+    public void deleteAccountById(long accountId) {
+        if(!accountRepository.existsById(accountId)){
+            throw new ResourceNotFoundException("Account with ID" + " " + accountId + " " + "does not exist");
+        }
+        accountRepository.deleteById(accountId);
+    }
+    /*public Account updateAccount(Long accountId, AccountUpdateRequest updateRequest)  {
+        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if (optionalAccount.isPresent()) {
+            Account account = optionalAccount.get();
+            boolean hasChanges = false;
+
+            if (updateRequest.getUsername() != null && !updateRequest.getUsername().equals(account.getUsername())) {
+                Account existingAccount = accountRepository.findByUsername(updateRequest.getUsername());
+
+                if (existingAccount != null && !existingAccount.getId().equals(accountId)) {
+                    // Ett konto med det nya användarnamnet finns redan, och det är inte det aktuella kontot
+                    throw new InvalidInputException("Username already exists with id: " + existingAccount.getId());
+                }
+
+                account.setUsername(updateRequest.getUsername());
+                hasChanges = true;
+            }
+
+            // ... (liknande kontroller för e-post och bankkontonummer)
+
+            if (hasChanges) {
+                return accountRepository.save(account);
+            } else {
+                // Ingen ändring gjordes; returnera det ursprungliga kontot
+                return account;
+            }
+        } else {
+            throw new EntityNotFoundException("Account with ID " + accountId + " not found");
+        }
+    } */
 }
