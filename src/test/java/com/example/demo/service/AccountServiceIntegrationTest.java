@@ -78,7 +78,7 @@ class AccountServiceIntegrationTest {
         Account updatedAccount = accountRepository.findById(account.getId()).get();
 
         //Act
-        accountService.updateAccount(accountId, inputAccount);
+        accountService.updateAccountById(accountId, inputAccount);
         Account fetchUpdate = accountRepository.findById(account.getId()).get();
 
         assertThat(fetchUpdate.getUsername()).isNotEqualTo(updatedAccount.getUsername());

@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
+import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,38 +39,39 @@ public class AccountService {
                 .orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
-    public Account updateAccount(Long accountId, Account updateRequest)  {
-       // Optional<Account> optionalAccount = accountRepository.findById(accountId);
-        if(!accountRepository.existsById(accountId)) {
+    /*public Account updateAccount(Long accountId, Account account) {
+
+        if (!accountRepository.existsById(accountId)) {
             throw new ResourceNotFoundException("Account with ID " + accountId + " not found");
         }
-        //check how to get the right account and then change the account.
-       /* Account account = optionalAccount.get();
+
+            //check how to get the right account and then change the account.
+            // Account account = optionalAccount.get();
             boolean hasChanges = false;
 
-            if (updateRequest.getUsername() != null && !updateRequest.getUsername().equals(account.getUsername())) {
-                Account existingAccount = accountRepository.findByUsername(updateRequest.getUsername());
+            if (account.getUsername() != null && !account.getUsername().equals(account.getUsername())) {
+                Account existingAccount = accountRepository.findByUsername(account.getUsername());
 
-                if(existingAccount!= null){
+                if (existingAccount != null) {
                     throw new InvalidInputException("Username already exists with id: " + accountId);
                 }
-                account.setUsername(updateRequest.getUsername());
+                account.setUsername(account.getUsername());
                 hasChanges = true;
             }
 
-            if (updateRequest.getEmail() != null && !updateRequest.getEmail().equals(account.getEmail())) {
-                Account existingAccount = accountRepository.findByEmail(updateRequest.getEmail());
+            if (account.getEmail() != null && !account.getEmail().equals(account.getEmail())) {
+                Account existingAccount = accountRepository.findByEmail(account.getEmail());
 
-                if(existingAccount!= null){
+                if (existingAccount != null) {
                     throw new InvalidInputException("Email already exists with id: " + accountId);
                 }
-                account.setEmail(updateRequest.getEmail());
+                account.setEmail(account.getEmail());
                 hasChanges = true;
             }
 
-            if (updateRequest.getBankAccountNumber() != null
-                    && !updateRequest.getBankAccountNumber().equals(account.getBankAccountNumber())) {
-                account.setBankAccountNumber(updateRequest.getBankAccountNumber());
+            if (account.getBankAccountNumber() != null
+                    && !account.getBankAccountNumber().equals(account.getBankAccountNumber())) {
+                account.setBankAccountNumber(account.getBankAccountNumber());
                 hasChanges = true;
             }
 
@@ -78,9 +80,47 @@ public class AccountService {
             } else {
                 // No changes were made; return the original account
                 return account;
-            } */
-            return null;
+            }
+
+        } */
+
+    /*public Account updateAccount(Long accountId, Account updatedAccount)  {
+        Optional<Account> optionalAccount = accountRepository.findById(accountId);
+        if (optionalAccount.isPresent()) {
+            Account existingAccount = optionalAccount.get();
+
+            if (updatedAccount.getUsername() != null && !updatedAccount.getUsername().equals(existingAccount.getUsername())) {
+                Account accountWithNewUsername = accountRepository.findByUsername(updatedAccount.getUsername());
+
+                if(accountWithNewUsername!= null && !accountWithNewUsername.getId().equals(accountId)){
+                    throw new InvalidInputException("Username already exists with id: " + accountWithNewUsername);
+                }
+                existingAccount.setUsername(updatedAccount.getUsername());
+            }
+
+            if (updatedAccount.getEmail() != null && !updatedAccount.getEmail().equals(existingAccount.getEmail())) {
+                Account accountWithNewEmail  = accountRepository.findByEmail(updatedAccount.getEmail());
+
+                if(accountWithNewEmail != null && !accountWithNewEmail.getId().equals(accountId)){
+                    throw new InvalidInputException("Email already exists with id: " + accountWithNewEmail.getId());
+                }
+                existingAccount.setEmail(updatedAccount.getEmail());
+            }
+                // No changes were made; return the original account
+                return accountRepository.save(existingAccount);
+
+        } else {
+            throw new EntityNotFoundException("Account with ID " + accountId + " not found");
         }
+    } */
+
+    public Account updateAccountById(Long accountId, Account account) {
+        if (!accountRepository.existsById(accountId)){
+            throw new ResourceNotFoundException("Account with ID" + " " + accountId + " " + "does not exist");
+        }
+        account.setId(accountId);
+        return accountRepository.save(account);
+    }
 
 
     public void deleteAccountById(long accountId) {

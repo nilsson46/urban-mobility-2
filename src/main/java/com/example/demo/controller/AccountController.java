@@ -36,7 +36,7 @@ public class AccountController {
     public ResponseEntity<Map<String, Object>> updateAccount(
             @PathVariable Long id,
             @RequestBody Account account) throws InvalidInputException, ResourceNotFoundException {
-        Account updatedAccount = accountService.updateAccount(id, account);
+        Account updatedAccount = accountService.updateAccountById(id, account);
 
         Map<String, Object> response = new HashMap<>();
         response.put("account", updatedAccount);

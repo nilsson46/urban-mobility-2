@@ -31,12 +31,13 @@ class AccountServiceUnitTest {
     @InjectMocks
     private AccountService accountService;
 
-    private Account account;
+    private Account fakeAccount;
 
     private Account inputAccount;
+
     @BeforeEach
     public void setup(){
-        account = Account.builder()
+        fakeAccount = Account.builder()
                 .id(1L)
                 .username("kuro")
                 .role("User")
@@ -66,18 +67,18 @@ class AccountServiceUnitTest {
          //Arrange
 
         // Mock the behavior of accountRepository.save(account) to return the account
-        given(accountRepository.save(account)).willReturn(account);
+        given(accountRepository.save(fakeAccount)).willReturn(fakeAccount);
 
         // Act
         // Call the createAccount method to create an account and get the savedAccount
-        Account savedAccount = accountService.createAccount(account);
+        Account savedAccount = accountService.createAccount(fakeAccount);
 
         // Assert
         // Check that the savedAccount is not null, indicating a successful account creation
         assertThat(savedAccount).isNotNull();
 
         // Verify that the accountRepository's save method was called exactly once with the provided account
-        verify(accountRepository, times(1)).save(account);
+        verify(accountRepository, times(1)).save(fakeAccount);
 
         // Verify that there were no other interactions with the accountRepository
         //verifyNoInteractions(accountRepository);
@@ -91,7 +92,7 @@ class AccountServiceUnitTest {
         Long accountId = 1L;
 
         // Mock the behavior of accountRepository.findById to return the account
-        given(accountRepository.findById(accountId)).willReturn(Optional.of(account));
+        given(accountRepository.findById(accountId)).willReturn(Optional.of(fakeAccount));
 
         // Act
         Account foundAccount = accountService.getAccountById(accountId);
@@ -107,31 +108,31 @@ class AccountServiceUnitTest {
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
         //Arrange
-        given(accountRepository.findByUsername(account.getUsername())).willReturn(account);
+        given(accountRepository.findByUsername(fakeAccount.getUsername())).willReturn(fakeAccount);
 
         //Act
         assertThrows(InvalidInputException.class,
-                () -> accountService.createAccount(account));
+                () -> accountService.createAccount(fakeAccount));
 
         //Assert
-        verify(accountRepository, times(1)).findByUsername(account.getUsername());
+        verify(accountRepository, times(1)).findByUsername(fakeAccount.getUsername());
     }
 
     @Test
     public void Should_ThrowIllegalArgumentException_IfEmailAlreadyExists(){
 
         //Arrange
-        given(accountRepository.findByEmail(account.getEmail())).willReturn(account);
+        given(accountRepository.findByEmail(fakeAccount.getEmail())).willReturn(fakeAccount);
 
         //Act
         assertThrows(InvalidInputException.class,
-                () -> accountService.createAccount(account));
+                () -> accountService.createAccount(fakeAccount));
 
         //Assert
-        verify(accountRepository, times(1)).findByEmail(account.getEmail());
+        verify(accountRepository, times(1)).findByEmail(fakeAccount.getEmail());
     }
 
-    @Test
+    /*@Test
     public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
         // Arrange
         String newUsername = "Simon";
@@ -148,7 +149,7 @@ class AccountServiceUnitTest {
         when(accountRepository.save(any(Account.class))).thenReturn(account);
 
         // Act
-        Account updatedAccount = accountService.updateAccount(1L, account);
+        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
 
         // Assert
         assertEquals(newUsername, updatedAccount.getUsername());
@@ -157,31 +158,36 @@ class AccountServiceUnitTest {
 
         // Verify
         verify(accountRepository).save(account);
-    }
+    } */
     @Test
-    public void test(){
-        long accountId = account.getId();
-
+    public void testUpdateAccount() {
+        // Arrange
+        long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
         given(accountRepository.save(inputAccount)).willReturn(inputAccount);
 
-        Account updatedAccount = accountService.updateAccount(accountId, inputAccount);
+        // Act
+        Account updatedAccount = accountService.updateAccountById(accountId, inputAccount);
 
-        assertThat(updatedAccount.getUsername()).isNotEqualTo(account.getUsername());
+        // Assert
+        assertThat(updatedAccount.getUsername()).isEqualTo(inputAccount.getUsername());
+        assertThat(updatedAccount.getId()).isEqualTo(inputAccount.getId());
+        assertThat(updatedAccount.getEmail()).isEqualTo(inputAccount.getEmail());
+
     }
     @Test
     public void testThrow(){
-        long accountId = account.getId();
+        long accountId = fakeAccount.getId();
 
         given(accountRepository.existsById(accountId)).willReturn(false);
 
         assertThrows(ResourceNotFoundException.class,
-                () -> accountService.updateAccount(accountId, account));
+                () -> accountService.updateAccountById(accountId, fakeAccount));
     }
 
     @Test
     public void Should_DeleteAccount_WhenPassingValidId(){
-        long accountId = account.getId();
+        long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
         willDoNothing().given(accountRepository).deleteById(accountId);
 
