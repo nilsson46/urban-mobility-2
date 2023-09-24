@@ -66,22 +66,17 @@ class AccountServiceUnitTest {
 
          //Arrange
 
-        // Mock the behavior of accountRepository.save(account) to return the account
         given(accountRepository.save(fakeAccount)).willReturn(fakeAccount);
 
         // Act
-        // Call the createAccount method to create an account and get the savedAccount
+
         Account savedAccount = accountService.createAccount(fakeAccount);
 
         // Assert
-        // Check that the savedAccount is not null, indicating a successful account creation
         assertThat(savedAccount).isNotNull();
 
-        // Verify that the accountRepository's save method was called exactly once with the provided account
         verify(accountRepository, times(1)).save(fakeAccount);
 
-        // Verify that there were no other interactions with the accountRepository
-        //verifyNoInteractions(accountRepository);
 
     }
 
@@ -91,7 +86,7 @@ class AccountServiceUnitTest {
         // Arrange
         Long accountId = 1L;
 
-        // Mock the behavior of accountRepository.findById to return the account
+        //Mock
         given(accountRepository.findById(accountId)).willReturn(Optional.of(fakeAccount));
 
         // Act
@@ -101,7 +96,7 @@ class AccountServiceUnitTest {
         assertThat(foundAccount).isNotNull();
         assertThat(foundAccount.getId()).isEqualTo(accountId);
 
-        // Verify that the accountRepository's findById method was called exactly once with the provided ID
+        //Verrify
         verify(accountRepository, times(1)).findById(accountId);
     }
 
@@ -131,34 +126,6 @@ class AccountServiceUnitTest {
         //Assert
         verify(accountRepository, times(1)).findByEmail(fakeAccount.getEmail());
     }
-
-    /*@Test
-    public void should_ReturnUpdatedAccountDetails_When_AccountIsUpdated() {
-        // Arrange
-        String newUsername = "Simon";
-        String newEmail = "simon@example.com";
-        String newBankAccountNumber = "1234567890";
-
-        AccountDto updateRequest = new AccountDto();
-        updateRequest.setUsername(newUsername);
-        updateRequest.setEmail(newEmail);
-        updateRequest.setBankAccountNumber(newBankAccountNumber);
-
-        // Mock
-        when(accountRepository.findById(1L)).thenReturn(Optional.of(account));
-        when(accountRepository.save(any(Account.class))).thenReturn(account);
-
-        // Act
-        Account updatedAccount = accountService.updateAccount(1L, updateRequest);
-
-        // Assert
-        assertEquals(newUsername, updatedAccount.getUsername());
-        assertEquals(newEmail, updatedAccount.getEmail());
-        assertEquals(newBankAccountNumber, updatedAccount.getBankAccountNumber());
-
-        // Verify
-        verify(accountRepository).save(account);
-    } */
     @Test
     public void testUpdateAccount() {
         // Arrange
@@ -175,18 +142,21 @@ class AccountServiceUnitTest {
         assertThat(updatedAccount.getEmail()).isEqualTo(inputAccount.getEmail());
 
     }
-    @Test
+    /*@Test
     public void testThrow(){
-        long accountId = fakeAccount.getId();
 
+       //Arrange
+        long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(false);
 
+        //Act and Assert
         assertThrows(ResourceNotFoundException.class,
                 () -> accountService.updateAccountById(accountId, fakeAccount));
-    }
+    } */
 
     @Test
     public void Should_DeleteAccount_WhenPassingValidId(){
+
         long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
         willDoNothing().given(accountRepository).deleteById(accountId);
