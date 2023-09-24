@@ -6,6 +6,7 @@ import com.example.demo.repository.AccountRepository;
 import com.example.demo.service.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -38,6 +40,8 @@ class AccountControllerEndToEndTest {
 
     @BeforeEach
     public void setUp() throws JsonProcessingException {
+
+        accountRepository.deleteAll();
         // Create and save a test account to the database
         account = Account.builder()
                 .id(1L)
@@ -49,18 +53,16 @@ class AccountControllerEndToEndTest {
                 .paymentHistory(0)
                 .activeOrders(0)
                 .build();
-        accountRepository.save(account);
         ObjectMapper objectMapper = new ObjectMapper();
         jsonAccount = objectMapper.writeValueAsString(account);
     }
-
-
 
     @AfterEach
     void cleanUp(){
         accountRepository.deleteAll();
     }
     @Test
+
     void Should_CreateAccount_ReturnAccount() throws  Exception{
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -75,39 +77,30 @@ class AccountControllerEndToEndTest {
     }
 
     @Test
-    void Should_UpdateAccount_ReturnAccount() throws  Exception{
+    void Should_UpdateAccount_ReturnAccount() throws Exception {
 
-        Account account = Account.builder()
-                .username("melvin")
-                .role("User")
-                .email("melvin@gmail.com")
-                .bankAccountNumber("12345678")
-                .paymentConfirmed(true)
-                .paymentHistory(0)
-                .activeOrders(0)
-                .build();
+        accountRepository.save(account);
+        // Update the account's username and email
+        account.setUsername("Simon");
+        account.setEmail("simon@gmail.com");
 
-        Account createdAccount = accountService.createAccount(account);
-
-        AccountDto updateRequest = new AccountDto();
-        updateRequest.setUsername("Simon");
-        updateRequest.setEmail("simon@gmail.com");
-
+        // Convert the updated account to JSON
         ObjectMapper objectMapper = new ObjectMapper();
-        String jsonUpdateRequest = objectMapper.writeValueAsString(updateRequest);
+        String updatedJsonAccount = objectMapper.writeValueAsString(account);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/account/{id}", createdAccount.getId()) // Use the ID of the created account
+                        .put("/api/account/{id}", account.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonUpdateRequest)
+                        .content(updatedJsonAccount) // Use the JSON data with updated values
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.account.id").value(createdAccount.getId()))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.account.id").value(account.getId()))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.username").value("Simon"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.email").value("simon@gmail.com"));
     }
     @Test
     public void Should_DeleteAccount() throws Exception{
+        accountRepository.save(account);
         mockMvc.perform(MockMvcRequestBuilders
                 .delete("/api/account/{id}", 1L))
                 .andExpect(status().isOk())

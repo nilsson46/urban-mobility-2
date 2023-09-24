@@ -4,11 +4,13 @@ import com.example.demo.dto.AccountDto;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.urbanMobilityApplication;
 import com.example.demo.entity.Account;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -50,10 +52,7 @@ class AccountServiceIntegrationTest {
                 .build();
     }
 
-    @AfterEach
-    void cleanUp(){
-        accountRepository.deleteAll();
-    }
+
 
     @Test
     public void Should_CreateAndReturnAccountFromDatabase() {
@@ -68,25 +67,27 @@ class AccountServiceIntegrationTest {
 
     }
 
+    
+
     @Test
-
-    public void Should_UpdateAccount_WhenUpdateIsMade(){
-
-        //Arrange
+    public void ShouldChangeFetchAccount_WhenUpdated(){
+        // Arrange
         long accountId = account.getId();
         accountRepository.save(account);
         Account updatedAccount = accountRepository.findById(account.getId()).get();
 
-        //Act
+        // Act
         accountService.updateAccountById(accountId, inputAccount);
-        Account fetchUpdate = accountRepository.findById(account.getId()).get();
+        Account fetchUpdated = accountRepository.findById(accountId).get();
 
-        assertThat(fetchUpdate.getUsername()).isNotEqualTo(updatedAccount.getUsername());
-        assertThat(fetchUpdate.getId()).isEqualTo(updatedAccount.getId());
-        assertThat(fetchUpdate.getEmail()).isNotEqualTo(updatedAccount.getEmail());
-
+        // Assert
+        assertThat(fetchUpdated.getId()).isEqualTo(updatedAccount.getId());
+        assertThat(fetchUpdated.getUsername()).isNotEqualTo(updatedAccount.getUsername());
+        assertThat(fetchUpdated.getEmail()).isNotEqualTo(updatedAccount.getEmail());
     }
     @Test
+    @Transactional
+    @Rollback(true)
     public void Should_BeEmpty_WhenDeleteByAccountById(){
         accountRepository.save(account);
         long accountId = account.getId();
@@ -97,8 +98,8 @@ class AccountServiceIntegrationTest {
 
     }
 
-
-
-
-
+    /*@AfterEach
+    void cleanUp(){
+        accountRepository.deleteAll();
+    } */
 }
