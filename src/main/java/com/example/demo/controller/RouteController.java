@@ -36,13 +36,12 @@ public class RouteController {
         //Account account = accountService.getAccountById(accountId).get();
         return routeService.updateRoute(routeId, accountId, route);
     } */
-    @PutMapping("/{routeId}/account/{accountId}")
+    @PutMapping("/{routeId}")
     public Route updateRoute(
             @PathVariable("routeId") long routeId,
-            @PathVariable("accountId") long accountId,
-            @RequestBody Route transport
+            @RequestBody Route route
     ){
-        return routeService.updateRouteById(routeId, accountId, transport);
+        return routeService.updateRouteAsSupplier(routeId, route);
     }
 
 }

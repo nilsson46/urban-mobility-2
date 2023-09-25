@@ -26,19 +26,24 @@ public class RouteService {
     }
 
     //Probably orderRoute
-    public Route updateRouteById(long routeId, long accountId, Route route) {
+    /*public Route updateRouteById(long routeId, long accountId, Route route) {
         Route fetchedTransport = routeRepository.findById(routeId).get();
         Account account = accountService.getAccountById(accountId).get();
         fetchedTransport.setAccount(account);
         fetchedTransport.setId(routeId);
         return routeRepository.save(route);
+    } */
+    public Route updateRouteById(long routeId, long accountId) {
+        Route fetchedTransport = routeRepository.findById(routeId).get();
+        Account account = accountService.getAccountById(accountId).get();
+        fetchedTransport.setAccount(account);
+        fetchedTransport.setId(routeId);
+        return routeRepository.save(fetchedTransport);
     }
-
-    /*public Route updateRouteAsSupplier(long routeId, long accountId, Route route){
+    //Should be update route as supplier. Need some sort of if to check.
+    public Route updateRouteAsSupplier(long routeId, Route route){
         Route fethedRoute = routeRepository.findById(routeId).get();
-
-        fethedRoute.setAccount(account);
         fethedRoute.setId(routeId);
         return  routeRepository.save(route);
-    } */
+    }
 }
