@@ -34,9 +34,12 @@ public class AccountService {
             throw new InvalidInputException("Email already exists");
         }
         return accountRepository.save(account);
-    }public Account getAccountById(Long id) {
-        return accountRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    }
+    public Optional<Account> getAccountById(Long accountId) {
+        if (!accountRepository.existsById(accountId)) {
+            throw new ResourceNotFoundException("Account with ID " + accountId + " does not exist");
+        }
+        return accountRepository.findById(accountId);
     }
 
     /*public Account updateAccount(Long accountId, Account account) {

@@ -90,11 +90,11 @@ class AccountServiceUnitTest {
         given(accountRepository.findById(accountId)).willReturn(Optional.of(fakeAccount));
 
         // Act
-        Account foundAccount = accountService.getAccountById(accountId);
+        Optional<Account> foundAccount = accountService.getAccountById(accountId);
 
         // Assert
         assertThat(foundAccount).isNotNull();
-        assertThat(foundAccount.getId()).isEqualTo(accountId);
+        assertThat(foundAccount.get().getId()).isEqualTo(accountId);
 
         //Verrify
         verify(accountRepository, times(1)).findById(accountId);

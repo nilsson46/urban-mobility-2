@@ -14,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -33,7 +35,6 @@ class AccountServiceIntegrationTest {
 
     private Account account;
     private Account inputAccount;
-
     private Account anotherAccount;
     @BeforeEach
     public void setup(){
@@ -82,9 +83,9 @@ class AccountServiceIntegrationTest {
         assertThat(savedAccount).isNotNull();
         assertThat(savedAccount.getId()).isNotNull();
 
-        Account retrievedAccount = accountService.getAccountById(savedAccount.getId());
+        Optional<Account> retrievedAccount = accountService.getAccountById(savedAccount.getId());
         assertThat(retrievedAccount).isNotNull();
-        assertThat(retrievedAccount.getUsername()).isEqualTo("kuro");
+        assertThat(retrievedAccount.get().getUsername()).isEqualTo("kuro");
 
     }
 
@@ -103,13 +104,13 @@ class AccountServiceIntegrationTest {
         assertThat(anotherSavedAccount).isNotNull();
         assertThat(anotherSavedAccount.getId()).isNotNull();
 
-        Account retrievedAccount = accountService.getAccountById(savedAccount.getId());
+        Optional<Account> retrievedAccount = accountService.getAccountById(savedAccount.getId());
         assertThat(retrievedAccount).isNotNull();
-        assertThat(retrievedAccount.getUsername()).isEqualTo("kuro");
+        assertThat(retrievedAccount.get().getUsername()).isEqualTo("kuro");
 
-        Account retrievedSecondAccount = accountService.getAccountById(anotherSavedAccount.getId());
+        Optional<Account> retrievedSecondAccount = accountService.getAccountById(anotherSavedAccount.getId());
         assertThat(retrievedSecondAccount).isNotNull();
-        assertThat(retrievedSecondAccount.getUsername()).isEqualTo("Viktor");
+        assertThat(retrievedSecondAccount.get().getUsername()).isEqualTo("Viktor");
 
     }
 

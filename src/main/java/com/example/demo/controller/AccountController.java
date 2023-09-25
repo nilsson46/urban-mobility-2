@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.Exceptions.InvalidInputException;
-import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import com.example.demo.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/account")
@@ -23,7 +23,7 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public Account getAccountById(@PathVariable("id") long accountId){
+    public Optional<Account> getAccountById(@PathVariable("id") long accountId){
         return accountService.getAccountById(accountId);
     }
 

@@ -35,14 +35,21 @@ public class Account {
     @Column(name = "payment_history", nullable = false)
     private int paymentHistory;
 
-    @OneToMany(targetEntity = Order.class,cascade = CascadeType.ALL)
+   /* @OneToMany(targetEntity = Order.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "account_id")
     //@Column(name = "active_orders", nullable = false)
-    private List<Order> activeOrders;
+    private List<Order> activeOrders; */
+   @OneToMany(targetEntity = Route.class,cascade = CascadeType.ALL)
+   @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+   //@Column(name = "active_orders", nullable = false)
+   private List<Route> route;
 
     public Account setUsername(String username) {
         this.username = username;
         return this; // Return the modified object
     }
 
+    public void setRoute(List<Route> route) {
+        this.route = route;
+    }
 }

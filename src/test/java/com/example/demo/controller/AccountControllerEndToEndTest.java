@@ -53,7 +53,7 @@ class AccountControllerEndToEndTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
         ObjectMapper objectMapper = new ObjectMapper();
         jsonAccount = objectMapper.writeValueAsString(account);
