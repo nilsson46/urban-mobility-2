@@ -45,7 +45,7 @@ class AccountServiceUnitTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
         inputAccount = Account.builder()
                 .id(1L)
@@ -55,7 +55,7 @@ class AccountServiceUnitTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
     }
 

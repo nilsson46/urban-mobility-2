@@ -45,7 +45,7 @@ class AccountServiceIntegrationTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
 
         inputAccount = Account.builder()
@@ -56,7 +56,7 @@ class AccountServiceIntegrationTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
         anotherAccount = Account.builder()
                 .id(2L)
@@ -66,7 +66,7 @@ class AccountServiceIntegrationTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
     }
 

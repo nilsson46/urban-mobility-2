@@ -3,6 +3,8 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,6 +14,7 @@ import lombok.*;
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_id")
     private Long id;
 
     @Column(name = "username", nullable = false, unique = true)
@@ -32,8 +35,10 @@ public class Account {
     @Column(name = "payment_history", nullable = false)
     private int paymentHistory;
 
-    @Column(name = "active_orders", nullable = false)
-    private int activeOrders;
+    @OneToMany(targetEntity = Order.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
+    //@Column(name = "active_orders", nullable = false)
+    private List<Order> activeOrders;
 
     public Account setUsername(String username) {
         this.username = username;
