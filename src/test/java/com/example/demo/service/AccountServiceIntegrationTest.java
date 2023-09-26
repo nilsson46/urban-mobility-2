@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -111,10 +112,7 @@ class AccountServiceIntegrationTest {
         Optional<Account> retrievedSecondAccount = accountService.getAccountById(anotherSavedAccount.getId());
         assertThat(retrievedSecondAccount).isNotNull();
         assertThat(retrievedSecondAccount.get().getUsername()).isEqualTo("Viktor");
-
     }
-
-    
 
     @Test
     public void ShouldChangeFetchAccount_WhenUpdated(){
@@ -144,8 +142,6 @@ class AccountServiceIntegrationTest {
         );
     }
     @Test
-    @Transactional
-    @Rollback(true)
     public void Should_BeEmpty_WhenDeleteByAccountById(){
         //Arrange
         accountRepository.save(account);
@@ -153,7 +149,7 @@ class AccountServiceIntegrationTest {
         // Act
         accountService.deleteAccountById(accountId);
         //Assert
-        assertThat(accountRepository.findAll().size()).isEqualTo(0);
+        assertThat(accountRepository.findAll().isEmpty());
 
     }
     @Test

@@ -16,8 +16,10 @@ public class RouteService {
         this.routeRepository = repository;
         this.accountService = accountService;
     }
-
+    //Check so role is supplier.
     public Route createRoute(Route route){
+
+
         return routeRepository.save(route);
     }
 
@@ -40,9 +42,16 @@ public class RouteService {
         fetchedTransport.setId(routeId);
         return routeRepository.save(fetchedTransport);
     }
+    public Route deleteOrderById(long routeId) {
+        Route fetchedTransport = routeRepository.findById(routeId).get();
+        fetchedTransport.setAccount(null);
+        fetchedTransport.setId(routeId);
+        return routeRepository.save(fetchedTransport);
+    }
     //Should be update route as supplier. Need some sort of if to check.
     public Route updateRouteAsSupplier(long routeId, Route route){
         Route fethedRoute = routeRepository.findById(routeId).get();
+        //routeRepository.findByUsername
         fethedRoute.setId(routeId);
         return  routeRepository.save(route);
     }

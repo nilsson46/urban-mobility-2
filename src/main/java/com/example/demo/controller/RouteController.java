@@ -43,5 +43,4 @@ public class RouteController {
     ){
         return routeService.updateRouteAsSupplier(routeId, route);
     }
-
 }

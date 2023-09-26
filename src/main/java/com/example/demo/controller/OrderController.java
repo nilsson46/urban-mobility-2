@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Route;
+import com.example.demo.service.OrderService;
 import com.example.demo.service.RouteService;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,18 +9,24 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/order")
 public class OrderController {
 
-    private RouteService routeService;
+    private OrderService orderService;
 
-    public OrderController(RouteService routeService) {
-        this.routeService = routeService;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @PutMapping("/{routeId}/account/{accountId}")
-    public Route createOrder(
+    public String createOrder(
             @PathVariable("routeId") long routeId,
             @PathVariable("accountId") long accountId
            // @RequestBody Route transport
-    ){
-        return routeService.updateRouteById(routeId, accountId);
+    ) {
+        orderService.makeAOrder(routeId, accountId);
+        return "Order was successfully made " + " route id of the order: " + routeId;
+    }
+    @PutMapping("/{routeId}")
+    public String deleteOrder(@PathVariable("routeId") long routeId){
+        orderService.deleteOrder(routeId);
+        return "Order was successfully deleted " + "route id of the order: " + routeId;
     }
 }
