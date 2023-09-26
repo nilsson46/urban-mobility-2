@@ -20,9 +20,9 @@ public class RouteController {
         this.accountService = accountService;
     }
 
-    @PostMapping
-    public Route createRoute(@RequestBody Route route){
-        return routeService.createRoute(route);
+    @PostMapping("/account/{accountId}")
+    public Route createRoute(@PathVariable ("accountId") long accountId, @RequestBody Route route){
+        return routeService.createRoute(route,accountId);
     }
 
     @GetMapping("/{id}")
@@ -36,11 +36,12 @@ public class RouteController {
         //Account account = accountService.getAccountById(accountId).get();
         return routeService.updateRoute(routeId, accountId, route);
     } */
-    @PutMapping("/{routeId}")
+    @PutMapping("/{routeId}/account/{accountId}")
     public Route updateRoute(
             @PathVariable("routeId") long routeId,
+            @PathVariable("accountId") long accountId,
             @RequestBody Route route
     ){
-        return routeService.updateRouteAsSupplier(routeId, route);
+        return routeService.updateRouteAsSupplier(routeId, accountId, route);
     }
 }

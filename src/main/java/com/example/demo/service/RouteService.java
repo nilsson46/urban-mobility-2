@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Route;
 import com.example.demo.repository.RouteRepository;
@@ -12,14 +13,18 @@ public class RouteService {
     private RouteRepository routeRepository;
     private AccountService accountService;
 
-    public RouteService(RouteRepository repository, AccountService accountService) {
-        this.routeRepository = repository;
+    private AuthService authService;
+
+    public RouteService(RouteRepository routeRepository, AccountService accountService, AuthService authService) {
+        this.routeRepository = routeRepository;
         this.accountService = accountService;
+        this.authService = authService;
     }
+
     //Check so role is supplier.
-    public Route createRoute(Route route){
-
-
+    public Route createRoute(Route route, long accountId){
+        authService.validSupplier(accountId);
+        //Should just be able to create a route with their own supplier name.
         return routeRepository.save(route);
     }
 
@@ -49,10 +54,19 @@ public class RouteService {
         return routeRepository.save(fetchedTransport);
     }
     //Should be update route as supplier. Need some sort of if to check.
-    public Route updateRouteAsSupplier(long routeId, Route route){
+    public Route updateRouteAsSupplier(long routeId, long accountId, Route route){
+        authService.validSupplier(accountId);
         Route fethedRoute = routeRepository.findById(routeId).get();
-        //routeRepository.findByUsername
+        validSupplierToUpdateRoute(accountId, route);
         fethedRoute.setId(routeId);
         return  routeRepository.save(route);
+    }
+
+    public String validSupplierToUpdateRoute(long accountId,Route route){
+        Account supplier = accountService.getAccountById(accountId).get();
+        if(!supplier.getUsername().equals(route.getSupplier())){
+            throw new InvalidInputException("Your are not the same supplier as the route creator");
+        }
+        return "You are allowed to change this route";
     }
 }
