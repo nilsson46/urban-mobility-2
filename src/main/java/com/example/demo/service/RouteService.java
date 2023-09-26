@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.Exceptions.InvalidInputException;
+import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Route;
 import com.example.demo.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RouteService {
@@ -26,6 +28,15 @@ public class RouteService {
         authService.validSupplier(accountId);
         //Should just be able to create a route with their own supplier name.
         return routeRepository.save(route);
+    }
+
+    public Optional<Route> getRouteById(long routeId){
+        Optional<Route> routeOptional = routeRepository.findById(routeId);
+
+        if(routeOptional.isEmpty()){
+            throw new ResourceNotFoundException("Route with ID " + routeId + "not found");
+        }
+        return routeOptional;
     }
 
     public List<Route> getAllRoutes(){
