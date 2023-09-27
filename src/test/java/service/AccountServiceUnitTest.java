@@ -34,9 +34,9 @@ class AccountServiceUnitTest {
                 .role("User")
                 .email("kuro@gmail.com")
                 .bankAccountNumber("12345678")
-                .isPaymentConfirmed(true)
+                //.isPaymentConfirmed(true)
                 .paymentHistory(0)
-                .activeOrders(0)
+                //.activeOrders(0)
                 .build();
     }
 
