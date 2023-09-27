@@ -58,8 +58,9 @@ class AccountControllerEndToEndTest {
         ObjectMapper objectMapper = new ObjectMapper();
         jsonAccount = objectMapper.writeValueAsString(account);
     }
-    @Test
 
+    //More tests and check the status code.
+    @Test
     void Should_CreateAccount_ReturnAccount() throws  Exception{
 
         mockMvc.perform(MockMvcRequestBuilders

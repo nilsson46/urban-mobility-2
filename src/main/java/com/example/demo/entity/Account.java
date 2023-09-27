@@ -42,14 +42,15 @@ public class Account {
    @OneToMany(targetEntity = Route.class,cascade = CascadeType.ALL)
    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
    //@Column(name = "active_orders", nullable = false)
-   private List<Route> route;
+   private List<Route> routes;
 
     public Account setUsername(String username) {
         this.username = username;
         return this; // Return the modified object
     }
 
-    public void setRoute(List<Route> route) {
-        this.route = route;
+    public void setRoutes(List<Route> route) {
+        this.routes = route;
     }
+
 }
