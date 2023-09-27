@@ -6,7 +6,7 @@
 
 # syntax=docker/dockerfile:1
 
-FROM openjdk:17
+FROM openjdk:17 as base
 WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
