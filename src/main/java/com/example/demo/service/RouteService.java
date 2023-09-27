@@ -45,14 +45,13 @@ public class RouteService {
     public List<Route> getAllRoutes(){
         return routeRepository.findAll();
     }
-
-
     public Route updateRouteById(long routeId, long accountId) {
         Route fetchedTransport = routeRepository.findById(routeId).get();
         Account account = accountService.getAccountById(accountId).get();
         fetchedTransport.setAccount(account);
         fetchedTransport.setId(routeId);
         return routeRepository.save(fetchedTransport);
+        //
     }
     public Route deleteOrderById(long routeId) {
         Route fetchedTransport = routeRepository.findById(routeId).get();
