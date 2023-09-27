@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+
 @Service
 public class RouteService {
     private RouteRepository routeRepository;
@@ -30,6 +31,7 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
+
     public Optional<Route> getRouteById(long routeId){
         Optional<Route> routeOptional = routeRepository.findById(routeId);
 
@@ -38,6 +40,7 @@ public class RouteService {
         }
         return routeOptional;
     }
+
 
     public List<Route> getAllRoutes(){
         return routeRepository.findAll();
