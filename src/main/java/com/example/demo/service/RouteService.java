@@ -42,15 +42,6 @@ public class RouteService {
     public List<Route> getAllRoutes(){
         return routeRepository.findAll();
     }
-
-    //Probably orderRoute
-    /*public Route updateRouteById(long routeId, long accountId, Route route) {
-        Route fetchedTransport = routeRepository.findById(routeId).get();
-        Account account = accountService.getAccountById(accountId).get();
-        fetchedTransport.setAccount(account);
-        fetchedTransport.setId(routeId);
-        return routeRepository.save(route);
-    } */
     public Route updateRouteById(long routeId, long accountId) {
         Route fetchedTransport = routeRepository.findById(routeId).get();
         Account account = accountService.getAccountById(accountId).get();
