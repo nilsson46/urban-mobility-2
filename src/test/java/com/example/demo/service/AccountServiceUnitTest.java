@@ -5,6 +5,7 @@ import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -81,7 +82,8 @@ class AccountServiceUnitTest {
     }
 
 
-    /*@Test
+    @Test
+    @Disabled
     public void Should_ReturnAccount_When_FindAccountById() {
         // Arrange
         Long accountId = 1L;
@@ -98,7 +100,7 @@ class AccountServiceUnitTest {
 
         //Verrify
         verify(accountRepository, times(1)).findById(accountId);
-    } */
+    }
 
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
