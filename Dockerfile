@@ -23,7 +23,7 @@ FROM base as build
 RUN ./mvnw package
 
 
-FROM eclipse-temurin:17-jre-jammy as production
+FROM openjdk:17 as production
 EXPOSE 8081
 COPY --from=build /app/target/urban-mobility-*.jar /urban-mobility.jar
 CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/urban-mobility.jar"]
