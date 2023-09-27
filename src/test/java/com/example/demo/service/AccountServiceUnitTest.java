@@ -82,7 +82,7 @@ class AccountServiceUnitTest {
     }
 
 
-    @Test
+    /*@Test
     @Disabled
     public void Should_ReturnAccount_When_FindAccountById() {
         // Arrange
@@ -100,7 +100,7 @@ class AccountServiceUnitTest {
 
         //Verrify
         verify(accountRepository, times(1)).findById(accountId);
-    }
+    } */
 
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
