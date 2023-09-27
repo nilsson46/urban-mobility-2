@@ -1,12 +1,15 @@
 package com.example.demo.service;
 
 import com.example.demo.Exceptions.InvalidInputException;
+import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.entity.Account;
 import com.example.demo.entity.Route;
 import com.example.demo.repository.RouteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 
 @Service
 public class RouteService {
@@ -28,6 +31,18 @@ public class RouteService {
         return routeRepository.save(route);
     }
 
+<<<<<<< HEAD
+=======
+    public Optional<Route> getRouteById(long routeId){
+        Optional<Route> routeOptional = routeRepository.findById(routeId);
+
+        if(routeOptional.isEmpty()){
+            throw new ResourceNotFoundException("Route with ID " + routeId + "not found");
+        }
+        return routeOptional;
+    }
+
+>>>>>>> dev
     public List<Route> getAllRoutes(){
         return routeRepository.findAll();
     }
