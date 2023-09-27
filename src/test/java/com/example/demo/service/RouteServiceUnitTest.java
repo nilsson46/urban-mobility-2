@@ -1,5 +1,4 @@
 package com.example.demo.service;
-
 import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.Exceptions.ResourceNotFoundException;
 import com.example.demo.entity.Account;
@@ -11,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,16 +25,22 @@ import static org.mockito.Mockito.*;
 class RouteServiceUnitTest {
     @Mock
     private RouteRepository routeRepository;
+
     @Mock
     private AuthService authService;
+
 
     @InjectMocks
     private RouteService routeService;
     private AccountService accountService;
 
     private Route firstRoute;
+
+    private Account fakeAccount;
+
     private Route secondRoute;
     private Account supplierAccount;
+
     private Account userAccount;
 
     @BeforeEach
@@ -52,6 +57,7 @@ class RouteServiceUnitTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
+                //.activeOrders(0)
                 .build();
         userAccount = Account.builder()
                 .id(2L)
@@ -61,6 +67,7 @@ class RouteServiceUnitTest {
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
                 .paymentHistory(0)
+                //.activeOrders(0)
                 .build();
         firstRoute = Route.builder()
                 .id(3L)
@@ -89,6 +96,7 @@ class RouteServiceUnitTest {
     }
 
     @Test
+
     public void testCreateRouteWithValidSupplier() {
         // Arrange
         long accountId = supplierAccount.getId();
@@ -224,5 +232,6 @@ class RouteServiceUnitTest {
         // Verify
         verify(routeRepository, times(1)).save(firstRoute);
         assert (firstRoute.getAccount() == null);
+
     }
 }
