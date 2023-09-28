@@ -165,7 +165,7 @@ concat_lines() {
     # enabled. Otherwise, we may read lines that are delimited with
     # \r\n and produce $'-Xarg\r' rather than -Xarg due to word
     # splitting rules.
-    tr -s '\r\n' ' ' < "$1"
+    tr -s '\r' ' ' < "$1"
   fi
 }
 
@@ -200,7 +200,7 @@ else
     fi
     while IFS="=" read -r key value; do
       # Remove '\r' from value to allow usage on windows as IFS does not consider '\r' as a separator ( considers space, tab, new line ('\n'), and custom '=' )
-      safeValue=$(echo "$value" | tr -d '\r')
+      safeValue=$(echo "$value" | tr -d '\n')
       case "$key" in (wrapperUrl) wrapperUrl="$safeValue"; break ;;
       esac
     done < "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.properties"
