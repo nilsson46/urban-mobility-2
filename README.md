@@ -56,7 +56,7 @@ Enter the name of the repository and the production tag.
 <br />
 <br />
 
-<img width="193" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/d2ad9da2-f702-42c0-9cd0-7dd57fea7960">
+<img width="442" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/55aa743a-9786-4477-91a8-5da087e25116">
 
 <br />
 Go to configuration. Select git and then enter the repository url. 
@@ -64,9 +64,6 @@ Go to configuration. Select git and then enter the repository url.
 Change branches to build to */main.
 <br />
 <br />
-
-<img width="442" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/55aa743a-9786-4477-91a8-5da087e25116">
-
 <img width="447" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/af6dc211-6e60-48e3-8fd5-740f0065a1e1">
 
 <img width="444" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/c913eaed-34eb-4927-ab98-a79309c6124e">
