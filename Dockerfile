@@ -21,7 +21,6 @@ CMD ["./mvnw, dependency:resolve"]
 COPY src ./src
 
 FROM base as test
-RUN tr -d "\r" < mvnw
 CMD ["./mvnw", "test"]
 
 FROM base as development
