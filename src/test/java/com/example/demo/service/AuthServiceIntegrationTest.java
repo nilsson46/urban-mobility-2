@@ -59,9 +59,10 @@ class AuthServiceIntegrationTest {
 
     @Test
     public void ShouldThrowException_IfAccountIsASupplier(){
-
+        // Arrange
         accountService.createAccount(userAccount);
 
+        //Assert
         assertThrows(InvalidInputException.class,
                 () -> authService.validSupplier(userAccount.getId()));
     }

@@ -47,7 +47,7 @@ class RouteServiceUnitTest {
     public void setup(){
         authService = mock(AuthService.class);
         routeRepository = mock(RouteRepository.class);
-        accountService = mock(AccountService.class); // Mock the accountService
+        accountService = mock(AccountService.class);
         routeService = new RouteService(routeRepository, accountService, authService);
         supplierAccount = Account.builder()
                 .id(1L)
@@ -180,9 +180,10 @@ class RouteServiceUnitTest {
    /* @Test
     void updateRoute() {
         // Mock
+        when(accountService.createAccount(supplierAccount)).thenReturn(supplierAccount);
         when(authService.validSupplier(supplierAccount.getId())).thenReturn("You are a supplier");
-        when(routeRepository.save(any(Route.class))).thenReturn(firstRoute);
-
+        when(routeRepository.findById(firstRoute.getId())).thenReturn(Optional.of(firstRoute));
+        when(routeRepository.save(any(Route.class))).thenReturn(secondRoute);
         // Act
         Route result = routeService.updateRouteAsSupplier(firstRoute.getId(), supplierAccount.getId(), secondRoute);
 
@@ -190,10 +191,10 @@ class RouteServiceUnitTest {
         // Verify
         verify(authService).validSupplier(supplierAccount.getId());
         verify(routeRepository).findById(firstRoute.getId());
-        verify(routeRepository).save(firstRoute);
+        verify(routeRepository).save(secondRoute);
 
         // Assert
-        assertEquals(firstRoute, result);
+        assertEquals(secondRoute, result);
     } */
 
     @Test
