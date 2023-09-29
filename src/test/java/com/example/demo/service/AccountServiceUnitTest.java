@@ -152,10 +152,10 @@ class AccountServiceUnitTest {
 
         long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
-        willDoNothing().given(accountRepository).deleteById(accountId);
 
         accountService.deleteAccountById(accountId);
 
+        assertThat(accountRepository.count()).isEqualTo(0L);
         verify(accountRepository, times(1)).deleteById(accountId);
 
     }

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.Exceptions.InvalidInputException;
 import com.example.demo.entity.Account;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,8 +35,8 @@ class AuthServiceIntegrationTest {
                 .build();
         supplierAccount = Account.builder()
                 .id(1L)
-                .username("kuro")
-                .role("User")
+                .username("SJ")
+                .role("supplier")
                 .email("kuro@gmail.com")
                 .bankAccountNumber("12345678")
                 .paymentConfirmed(true)
@@ -54,6 +55,15 @@ class AuthServiceIntegrationTest {
 
         //Assert
         assertThat(result).isEqualTo("You are a supplier");
+    }
+
+    @Test
+    public void ShouldThrowException_IfAccountIsASupplier(){
+
+        accountService.createAccount(userAccount);
+
+        assertThrows(InvalidInputException.class,
+                () -> authService.validSupplier(userAccount.getId()));
     }
 
 }
