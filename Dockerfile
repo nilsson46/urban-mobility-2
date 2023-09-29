@@ -13,7 +13,7 @@
 
 
 # Use a Maven-specific base image
-FROM maven:3.8.4-openjdk-17-jdk-slim as base
+FROM eclipse-temurin:17-jdk-jammy as base
 WORKDIR /
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
@@ -33,7 +33,7 @@ FROM base as test
 CMD ["./mvnw", "test"]
 
 # Production stage
-FROM maven:3.8.4-openjdk-17-jdk-slim as production
+FROM eclipse-temurin:17-jdk-jammy as production
 EXPOSE 8080
 # Copy the built JAR file into the image
 COPY target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
