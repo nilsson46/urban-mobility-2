@@ -17,7 +17,7 @@ WORKDIR /app
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN chmod -R +x .
-RUN ./mvnw dependency:resolve
+RUN ./app/mvnw dependency:resolve
 COPY src ./src
 
 FROM base as test
