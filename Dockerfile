@@ -33,7 +33,7 @@ FROM base as test
 CMD ["./mvnw", "test"]
 
 # Production stage
-FROM eclipse-temurin:17-jre-jammy as production
+FROM maven:3.8.4-openjdk-17-jdk-slim as production
 EXPOSE 8080
 # Copy the built JAR file into the image
 COPY target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
