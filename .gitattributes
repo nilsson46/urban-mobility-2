@@ -1,1 +1,13 @@
-*.sh text eol=lf
+# Set the default behavior to LF for text files.
+* text eol=lf
+
+# Explicitly declare text files you want to always be normalized.
+*.c text
+*.h text
+
+# Declare files that will always have LF line endings on checkout.
+*.sln text eol=lf
+
+# Denote all files that are truly binary and should not be modified.
+*.png binary
+*.jpg binary
