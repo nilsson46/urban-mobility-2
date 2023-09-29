@@ -28,7 +28,7 @@ CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=mysql", "-Dspring-
 
 
 FROM base as build
-RUN ./mvnw package
+CMD ["./mvnw package"]
 
 
 FROM eclipse-temurin:17-jre-jammy as production
