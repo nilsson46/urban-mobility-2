@@ -33,5 +33,5 @@ CMD ["./mvnw package"]
 
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
-COPY --from=build /app/target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/urban-mobility-1.0.jar"]
+#COPY --from=build /app/target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/target/urban-mobility-1.0.jar"]
