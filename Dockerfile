@@ -28,6 +28,10 @@ FROM base as build
 # Build the application
 CMD ["./mvnw", "package"]
 
+# Define a "test" stage
+FROM base as test
+CMD ["./mvnw", "test"]
+
 # Production stage
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
