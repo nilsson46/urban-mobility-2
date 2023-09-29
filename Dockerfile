@@ -21,7 +21,7 @@ CMD ["./mvnw, dependency:resolve"]
 COPY src ./src
 
 FROM base as test
-RUN sed 's/^M$//'
+RUN tr -d "\r" < mvnw
 CMD ["./mvnw", "test"]
 
 FROM base as development
