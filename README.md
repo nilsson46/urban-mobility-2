@@ -28,14 +28,14 @@ Go down to add build step and select "Execute Windows batch command".
 <br />
 In the command field add the steps at image showing.
 <br />
-Then press save
+Then press "save"
 <br />
 These steps will run everytime you making a new build.
 <br />
 <br />
 <img width="223" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/5a1df599-c4d6-4ed1-a293-fe3f99bc0503">
 <br />
-Now press build now and jenkins will build
+Now press "build now" and jenkins will build
 
 
 
