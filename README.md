@@ -83,7 +83,3 @@ These steps will run everytime you making a new build.
 Now press "build now" and jenkins will build
 <br />
 <br /> 
-
-## Setup with jenkins production environment. In this pipeline you need to have docker installed. 
-<br /> 
-<br /> 
