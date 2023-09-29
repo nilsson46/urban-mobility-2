@@ -12,26 +12,25 @@
 
 
 
-FROM eclipse-temurin:17-jdk-jammy as base
+# Use a Maven-specific base image
+FROM maven:3.8.4-openjdk-17-jdk-slim as base
 WORKDIR /
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
-#RUN chmod -R +x .
-CMD ["./mvnw, dependency:resolve"]
+# Ensure the script has LF line endings
+RUN sed -i 's/\r$//' ./mvnw && chmod +x ./mvnw
+# Use the correct command to resolve dependencies
+CMD ["./mvnw", "dependency:resolve"]
 COPY src ./src
 
-FROM base as test
-CMD ["./mvnw", "test"]
-
-FROM base as development
-CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=mysql", "-Dspring-boot.run.jvmArguments='-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000'"]
-
-
+# Consolidate build and test stages
 FROM base as build
-CMD ["./mvnw package"]
+# Build the application
+CMD ["./mvnw", "package"]
 
-
+# Production stage
 FROM eclipse-temurin:17-jre-jammy as production
 EXPOSE 8080
-#COPY --from=build /app/target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
-CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/target/urban-mobility-1.0.jar"]
+# Copy the built JAR file into the image
+COPY target/urban-mobility-1.0.jar /urban-mobility-1.0.jar
+CMD ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "/urban-mobility-1.0.jar"]
