@@ -36,6 +36,22 @@ These steps will run everytime you making a new build.
 <img width="223" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/5a1df599-c4d6-4ed1-a293-fe3f99bc0503">
 <br />
 Now press "build now" and jenkins will build
+<br />
+<br /> 
 
+## Setup with jenkins production environment. In this pipeline you need to have docker installed. 
+<br /> 
+<br /> 
+<img width="189" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/08179763-8e66-48ea-b55c-7d96d5783b10">
+
+<img width="446" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/ea0ca9af-a80b-49da-bc1a-677a530f1fdf">
+
+<img width="193" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/d2ad9da2-f702-42c0-9cd0-7dd57fea7960">
+
+<img width="442" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/55aa743a-9786-4477-91a8-5da087e25116">
+
+<img width="447" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/af6dc211-6e60-48e3-8fd5-740f0065a1e1">
+
+<img width="444" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/c913eaed-34eb-4927-ab98-a79309c6124e">
 
 
