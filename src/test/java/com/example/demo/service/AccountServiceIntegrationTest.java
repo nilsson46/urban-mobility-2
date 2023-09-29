@@ -90,7 +90,6 @@ class AccountServiceIntegrationTest {
 
     }
 
-
     @Test
     public void Should_CreateAndReturnTwoAccountFromDatabase() {
 
@@ -141,7 +140,6 @@ class AccountServiceIntegrationTest {
                 () -> accountService.updateAccountById(nonExistentAccountId, new Account())
         );
     }
-    //hejehj
     @Test
     public void Should_BeEmpty_WhenDeleteByAccountById(){
         //Arrange

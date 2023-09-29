@@ -81,12 +81,15 @@ class AccountServiceUnitTest {
 
     }
 
-
+    //Slår account not exists
     /*@Test
-    @Disabled
     public void Should_ReturnAccount_When_FindAccountById() {
         // Arrange
         Long accountId = 1L;
+
+        // Create a fake account with ID 1
+        Account fakeAccount = new Account();
+        fakeAccount.setId(accountId);
 
         //Mock
         given(accountRepository.findById(accountId)).willReturn(Optional.of(fakeAccount));
@@ -102,7 +105,6 @@ class AccountServiceUnitTest {
         verify(accountRepository, times(1)).findById(accountId);
     } */
 
-    //HEJ
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
         //Arrange
@@ -145,18 +147,6 @@ class AccountServiceUnitTest {
         assertThat(updatedAccount.getEmail()).isEqualTo(inputAccount.getEmail());
 
     }
-    /*@Test
-    public void testThrow(){
-
-       //Arrange
-        long accountId = fakeAccount.getId();
-        given(accountRepository.existsById(accountId)).willReturn(false);
-
-        //Act and Assert
-        assertThrows(ResourceNotFoundException.class,
-                () -> accountService.updateAccountById(accountId, fakeAccount));
-    } */
-
     @Test
     public void Should_DeleteAccount_WhenPassingValidId(){
 
