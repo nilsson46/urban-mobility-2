@@ -26,7 +26,7 @@ Change branches to build to origin/dev.
 <br />
 Go down to add build step and select "Execute Windows batch command".
 <br />
-In the command field add the steps at image showing.
+In the command field add the steps as image showing.
 <br />
 Then press "save"
 <br />
@@ -43,10 +43,27 @@ Now press "build now" and jenkins will build
 <br /> 
 <br /> 
 <img width="189" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/08179763-8e66-48ea-b55c-7d96d5783b10">
+<br />
+Add a new job. 
+<br />
+Press the "new item" button. 
+<br />
+<br />
 
 <img width="446" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/ea0ca9af-a80b-49da-bc1a-677a530f1fdf">
+<br />
+Enter the name of the repository and the production tag.
+<br />
+<br />
 
 <img width="193" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/d2ad9da2-f702-42c0-9cd0-7dd57fea7960">
+
+<br />
+Go to configuration. Select git and then enter the repository url. 
+<br />
+Change branches to build to */main.
+<br />
+<br />
 
 <img width="442" alt="image" src="https://github.com/nilsson46/urban-mobility-2/assets/105226137/55aa743a-9786-4477-91a8-5da087e25116">
 
