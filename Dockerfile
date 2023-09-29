@@ -13,7 +13,7 @@
 
 
 FROM eclipse-temurin:17-jdk-jammy as base
-WORKDIR /app
+WORKDIR /
 COPY .mvn/ .mvn
 COPY mvnw pom.xml ./
 RUN chmod -R +x .
