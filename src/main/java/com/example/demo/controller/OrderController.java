@@ -24,9 +24,9 @@ public class OrderController {
         orderService.makeAOrder(routeId, accountId);
         return "Order was successfully made " + " route id of the order: " + routeId;
     }
-    @PutMapping("/{routeId}")
-    public String deleteOrder(@PathVariable("routeId") long routeId){
-        orderService.deleteOrder(routeId);
+    @PutMapping("/{accountId}route/{routeId}")
+    public String deleteOrder(@PathVariable("accountId") long accountId, @PathVariable("routeId") long routeId){
+        orderService.deleteOrder(accountId, routeId);
         return "Order was successfully deleted " + "route id of the order: " + routeId;
     }
 }
