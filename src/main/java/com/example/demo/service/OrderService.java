@@ -20,6 +20,9 @@ public class OrderService {
             throw new InvalidInputException("You dont have a valid payment");
         }
         routeService.updateRouteById(routeId, accountId);
+
+        int currenPaymentHistory = account.getPaymentHistory();
+        account.setPaymentHistory(currenPaymentHistory + 1);
     }
 
     public void deleteOrder(long routeId) {
