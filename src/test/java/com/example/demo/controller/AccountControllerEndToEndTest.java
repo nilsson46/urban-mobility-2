@@ -1,14 +1,10 @@
 package com.example.demo.controller;
-
-import com.example.demo.dto.AccountDto;
 import com.example.demo.entity.Account;
 import com.example.demo.repository.AccountRepository;
 import com.example.demo.service.AccountService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -44,7 +39,6 @@ class AccountControllerEndToEndTest {
     public void setUp() throws JsonProcessingException {
 
         accountRepository.deleteAll();
-        // Create and save a test account to the database
         account = Account.builder()
                 .id(1L)
                 .username("kuro")
@@ -59,7 +53,7 @@ class AccountControllerEndToEndTest {
         jsonAccount = objectMapper.writeValueAsString(account);
     }
 
-    //More tests and check the status code.
+
     @Test
     void Should_CreateAccount_ReturnAccount() throws  Exception{
 
@@ -78,18 +72,16 @@ class AccountControllerEndToEndTest {
     void Should_UpdateAccount_ReturnAccount() throws Exception {
 
         accountRepository.save(account);
-        // Update the account's username and email
         account.setUsername("Simon");
         account.setEmail("simon@gmail.com");
 
-        // Convert the updated account to JSON
         ObjectMapper objectMapper = new ObjectMapper();
         String updatedJsonAccount = objectMapper.writeValueAsString(account);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/account/{id}", account.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(updatedJsonAccount) // Use the JSON data with updated values
+                        .content(updatedJsonAccount)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.account.id").value(account.getId()))

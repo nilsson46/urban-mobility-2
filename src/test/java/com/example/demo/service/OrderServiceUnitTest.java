@@ -53,7 +53,7 @@ class OrderServiceUnitTest {
     }
 
     @Test
-    void makeAOrder() {
+    void should_ReturnOrder_WhenPaymentIsValid() {
         //Arrange
         long routeId = 1L;
         long accountId = validPaymentAccount.getId();
@@ -64,7 +64,7 @@ class OrderServiceUnitTest {
         assertEquals(1, validPaymentAccount.getPaymentHistory());
     }
     @Test
-    void makeAInvalidOrder() {
+    void should_ThrowInvalidInputException_WhenPaymentIsInvalid() {
         // Arrange
         long routeId = 1L;
         long accountId = 1L;
@@ -79,19 +79,15 @@ class OrderServiceUnitTest {
     }
 
     @Test
-    void testDeleteOrder() {
+    void should_deleteOrder_WhenOrderExists() {
+        //Arrange
         long routeId = 1L;
         long accountId = 1L;
-        // Set the payment history to 1 to simulate a valid payment
         validPaymentAccount.setPaymentHistory(1);
-
-        // Mock the behavior of accountService to return the valid payment account
         when(accountService.getAccountById(anyLong())).thenReturn(Optional.of(validPaymentAccount));
-
-        // Call the deleteOrder method with accountId and routeId
-        orderService.deleteOrder(accountId, routeId); // Pass accountId and routeId
-
-        // Assert that the payment history is updated to 0
+        //Act
+        orderService.deleteOrder(accountId, routeId);
+        // Assert
         assertEquals(0, validPaymentAccount.getPaymentHistory());
     }
 }

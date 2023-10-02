@@ -45,19 +45,21 @@ class AuthServiceUnitTest {
 
     @Test
     public void ShouldReturnValidMessage_WhenUserIsSupplier(){
+        //Arrange
         long accountId = 1L;
         given(accountService.getAccountById(accountId)).willReturn(Optional.of(userAccount));
         userAccount.setRole("supplier");
-
+        //Act
         authService.validSupplier(accountId);
-
+        //Assert
         assertThat(authService.validSupplier(accountId)).isEqualTo("You are a supplier");
     }
 
     @Test
     public void shouldThrowException_IfUserAndNotSupplier(){
+        //Arrange
         given(accountService.getAccountById(userAccount.getId())).willReturn(Optional.of(userAccount));
-
+        //Act and assert
         assertThrows(InvalidInputException.class,
                 () -> authService.validSupplier(userAccount.getId()));
     }

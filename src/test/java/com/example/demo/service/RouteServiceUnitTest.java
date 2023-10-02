@@ -97,7 +97,7 @@ class RouteServiceUnitTest {
 
     @Test
 
-    public void testCreateRouteWithValidSupplier() {
+    public void Should_CreateRoute_WhenSupplierCreatingRoute() {
         // Arrange
         long accountId = supplierAccount.getId();
         Route route = new Route();
@@ -109,7 +109,6 @@ class RouteServiceUnitTest {
         // Act
         Route result = routeService.createRoute(route, accountId);
 
-        // Assert
         // Verify
         verify(authService).validSupplier(accountId);
         verify(routeRepository).save(route);
@@ -118,7 +117,7 @@ class RouteServiceUnitTest {
         assertEquals(route, result);
     }
     @Test
-    public void testCreateRouteWithUserShouldThrowException() {
+    public void Should_ThrowInvalidInputException_WhenUserCreatingRoute() {
         // Arrange
         long accountId = userAccount.getId();
         Route route = new Route();
@@ -149,7 +148,7 @@ class RouteServiceUnitTest {
 
     }
     @Test
-    public void ShouldT_ThrowException_WhenPassingInvalidId(){
+    public void Should_ThrowException_WhenPassingInvalidId(){
         // Arrange
         long routeId = 5L;
 
@@ -158,13 +157,11 @@ class RouteServiceUnitTest {
                 () -> routeService.getRouteById(routeId));
     }
     @Test
-    void getAllRoutes() {
+    void should_ReturnAllRoutes() {
         // Arrange
         List<Route> listOfRoutes = new ArrayList<>();
         listOfRoutes.add(firstRoute);
         listOfRoutes.add(secondRoute);
-
-        //Mock
         when(routeRepository.findAll()).thenReturn(listOfRoutes);
 
         //Act
@@ -198,23 +195,21 @@ class RouteServiceUnitTest {
     } */
 
     @Test
-    void validSupplierToUpdateRoute_Success() {
-
+    void Should_ReturnMessage_WhenSupplierIsAllowedToChange() {
+        //Arrange
         when(accountService.getAccountById(anyLong())).thenReturn(Optional.of(supplierAccount));
-
+        //Act
         String result = routeService.validSupplierToUpdateRoute(supplierAccount.getId(), firstRoute);
-
+        //Assert
         assertEquals("You are allowed to change this route", result);
     }
     @Test
-    void validSupplierToUpdateRoute_Failure() {
-
+    void Should_ReturnMessage_WhenSupplierIsNotAllowedToChange() {
+        //Arrange
         when(accountService.getAccountById(anyLong())).thenReturn(Optional.of(supplierAccount));
-
-
+        //Act
         firstRoute.setSupplier("DifferentSupplier");
-
-
+        //Assert
         assertThrows(InvalidInputException.class, () -> {
             routeService.validSupplierToUpdateRoute(supplierAccount.getId(), firstRoute);
         });
@@ -223,8 +218,6 @@ class RouteServiceUnitTest {
     public void Should_DeleteAccount_WhenPassingValidId() {
         // Arrange
         long routeId = firstRoute.getId();
-
-        // Mock
         given(routeRepository.findById(routeId)).willReturn(Optional.of(firstRoute));
 
         // Act

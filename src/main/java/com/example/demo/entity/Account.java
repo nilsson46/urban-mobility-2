@@ -35,10 +35,6 @@ public class Account {
     @Column(name = "payment_history", nullable = false)
     private int paymentHistory;
 
-   /* @OneToMany(targetEntity = Order.class,cascade = CascadeType.ALL)
-    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
-    //@Column(name = "active_orders", nullable = false)
-    private List<Order> activeOrders; */
    @OneToMany(targetEntity = Route.class,cascade = CascadeType.ALL)
    @JoinColumn(name = "account_id", referencedColumnName = "account_id")
    //@Column(name = "active_orders", nullable = false)
@@ -46,7 +42,7 @@ public class Account {
 
     public Account setUsername(String username) {
         this.username = username;
-        return this; // Return the modified object
+        return this;
     }
 
     public void setRoutes(List<Route> route) {

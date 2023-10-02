@@ -82,28 +82,21 @@ class AccountServiceUnitTest {
     }
 
     //Slår account not exists
-    /*@Test
+    @Test
     public void Should_ReturnAccount_When_FindAccountById() {
         // Arrange
         Long accountId = 1L;
+        Account userAccount = accountRepository.save(fakeAccount);
 
-        // Create a fake account with ID 1
-        Account fakeAccount = new Account();
-        fakeAccount.setId(accountId);
-
-        //Mock
-        given(accountRepository.findById(accountId)).willReturn(Optional.of(fakeAccount));
-
+        given(accountRepository.findById(accountId)).willReturn(Optional.of(userAccount));
         // Act
         Optional<Account> foundAccount = accountService.getAccountById(accountId);
 
         // Assert
         assertThat(foundAccount).isNotNull();
+        assertThat(foundAccount.isPresent()).isTrue();
         assertThat(foundAccount.get().getId()).isEqualTo(accountId);
-
-        //Verrify
-        verify(accountRepository, times(1)).findById(accountId);
-    } */
+    }
 
     @Test
     public void Should_ThrowIllegalArgumentException_IfUsernameAlreadyExists(){
@@ -132,7 +125,7 @@ class AccountServiceUnitTest {
         verify(accountRepository, times(1)).findByEmail(fakeAccount.getEmail());
     }
     @Test
-    public void testUpdateAccount() {
+    public void Should_ReturnUpdatedAccount_WhenAccountIsUpdated() {
         // Arrange
         long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
@@ -149,18 +142,18 @@ class AccountServiceUnitTest {
     }
     @Test
     public void Should_DeleteAccount_WhenPassingValidId(){
-
+        // Arrange
         long accountId = fakeAccount.getId();
         given(accountRepository.existsById(accountId)).willReturn(true);
-
+        // Act
         accountService.deleteAccountById(accountId);
-
+        // Assert
         assertThat(accountRepository.count()).isEqualTo(0L);
         verify(accountRepository, times(1)).deleteById(accountId);
 
     }
     @Test
-    public void ShouldT_ThrowException_WhenPassingInvalidId(){
+    public void Should_ThrowException_WhenPassingInvalidId(){
         // Arrange
         long accountId = 2L;
         given(accountRepository.existsById(accountId)).willReturn(false);

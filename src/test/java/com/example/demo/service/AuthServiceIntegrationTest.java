@@ -62,7 +62,7 @@ class AuthServiceIntegrationTest {
         // Arrange
         accountService.createAccount(userAccount);
 
-        //Assert
+        // Act and Assert
         assertThrows(InvalidInputException.class,
                 () -> authService.validSupplier(userAccount.getId()));
     }
